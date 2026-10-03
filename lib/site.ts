@@ -14,7 +14,7 @@ import {
   Users,
 } from "lucide-react";
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.org";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || process.env.RENDER_EXTERNAL_URL || "https://example.org";
 
 export const organization = {
   name: "SWABHIMAN JAN EVAM PASHU KALYAN FOUNDATION",

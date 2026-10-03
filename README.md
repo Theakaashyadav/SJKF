@@ -1,6 +1,6 @@
 # Swabhiman Jan Evam Pashu Kalyan Foundation website
 
-Production-oriented, static-first NGO website built with Next.js, React, TypeScript and Tailwind CSS. Informational routes are prerendered; only payment operations use first-party server routes.
+Production-oriented static NGO website built with Next.js, React, TypeScript and Tailwind CSS. Every route is exported to HTML/CSS/JavaScript and can be hosted without a Node.js server.
 
 ## Local development
 
@@ -12,39 +12,45 @@ npm run dev
 
 Open `http://localhost:3000`.
 
+To preview the exact exported files after a production build, run `npm run build` and then `npm run preview`.
+
+## Render deployment
+
+The repository includes `render.yaml` for a Render Blueprint. It creates a Render Static Site, runs `npm ci && npm run build` and publishes the generated `out` directory.
+
+Use [Deploy to Render](https://render.com/deploy?repo=https://github.com/Theakaashyadav/SJKF), create a Blueprint from this repository, or create a Static Site manually with these values:
+
+- Root Directory: leave blank
+- Build Command: `npm ci && npm run build`
+- Publish Directory: `out`
+
+Do not add a start command or `PORT`. Add the public settings from `.env.example` in the site's Environment page before deploying. All `NEXT_PUBLIC_` values are embedded at build time, so redeploy after changing one.
+
 ## Production environment
 
-Set these variables in the Vercel project before enabling live payments:
+Set these public build-time variables in the hosting project:
 
-- `NEXT_PUBLIC_SITE_URL`: canonical production origin, for example `https://example.org`
+- `NEXT_PUBLIC_SITE_URL`: canonical custom-domain origin, for example `https://example.org`; when omitted on Render, the build uses `RENDER_EXTERNAL_URL`
 - `NEXT_PUBLIC_CONTACT_EMAIL` and `NEXT_PUBLIC_CONTACT_PHONE`: verified public contact details
 - `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT`: HTTPS endpoint from a secure static-form provider such as Formspree or Basin
-- `RAZORPAY_KEY_ID`: Razorpay public key ID, returned to checkout only with a server-created order
-- `RAZORPAY_KEY_SECRET`: server-only Razorpay secret
-- `RAZORPAY_WEBHOOK_SECRET`: separate webhook signing secret
-- `PAYMENT_RECEIPT_SECRET`: long random value used to encrypt short-lived receipt links
-- `DONATION_PAN_ENABLED` and `NEXT_PUBLIC_DONATION_PAN_ENABLED`: keep both `false`; enable together only after a verified legal or receipt requirement
-- `KV_REST_API_URL` and `KV_REST_API_TOKEN`: Vercel KV / Upstash Redis REST credentials for the payment-only ledger, distributed rate limits, webhook-event idempotency and receipt outbox
-- `PAYMENT_RECORD_TTL_SECONDS`: payment-ledger retention period; review this with the foundation’s accounting/legal adviser before launch
-- `RESEND_API_KEY`, `RECEIPT_FROM_EMAIL`: verified donation-receipt email delivery configuration
+- `NEXT_PUBLIC_RAZORPAY_PAYMENT_BUTTON_ID`: public `pl_...` ID of a live Razorpay Donations Payment Button
 
-Never prefix a secret with `NEXT_PUBLIC_`.
+This is a static site: never add API secrets, webhook secrets, private tokens or banking credentials to its environment. Every `NEXT_PUBLIC_` value is visible to visitors.
 
 ## Razorpay configuration
 
-1. Add the production key ID and secret in Vercel.
-2. Add a Razorpay webhook pointing to `https://YOUR-DOMAIN/api/razorpay/webhook`.
-3. Subscribe to the payment/order events required by the organization’s reconciliation process.
-4. Use a dedicated webhook secret and set the same value as `RAZORPAY_WEBHOOK_SECRET`.
-5. Complete gateway KYC, live-mode approval and an end-to-end low-value payment test before publishing the Donate CTA to the public.
+1. Complete Razorpay account activation and KYC.
+2. In the Razorpay dashboard, create a live **Donations Payment Button**.
+3. Configure INR, an editable amount field labelled **Donation Amount** from ₹100 to ₹5,00,000, presets of ₹500/₹1,000/₹2,500/₹5,000/₹10,000, and required name, email and mobile fields. The exact label lets the website prefill `data-prefill.amount.donation_amount`.
+4. Add a required cause field in Razorpay with the same causes displayed on this website. Add address, message or PAN only when there is a verified operational or legal need.
+5. Enable the provider's payment receipt and post-payment message. If using a redirect, point it to `https://YOUR-DOMAIN/payment-success/`.
+6. Copy only the public Payment Button ID (`pl_...`) into `NEXT_PUBLIC_RAZORPAY_PAYMENT_BUTTON_ID`, redeploy, and complete an end-to-end low-value live test.
 
-Orders are created server-side. Checkout is hosted by Razorpay. The return signature, order and payment are checked server-side before the success acknowledgement is issued. Full card data, CVV, OTP, PIN and banking passwords are never stored by this application.
-
-The payment store is mandatory: checkout remains unavailable until it is configured. It binds each browser callback to the server-created order, records captured payments, deduplicates Razorpay event IDs, preserves receipt-delivery state beyond provider retry windows and applies distributed order/verification rate limits.
+Payment entry, status and receipts are handled by Razorpay's hosted interface. The static site does not independently verify a transaction. Reconcile every contribution using Razorpay's transaction records before treating it as confirmed. Full card data, CVV, OTP, PIN and banking passwords are never stored by this application.
 
 ## Contact delivery
 
-To preserve the payment-only serverless boundary, contact messages submit directly from the validated static form to the configured HTTPS form provider. The form includes required-field validation, mobile/email patterns and a provider-compatible honeypot. Before launch, approve a provider that enforces its own server-side validation, rate limiting or CAPTCHA, destination verification, spam filtering and appropriate CORS. Until an endpoint is configured, the form gives a clear unavailable message instead of pretending submission succeeded.
+Contact messages submit directly from the validated static form to the configured HTTPS form provider. The form includes required-field validation, mobile/email patterns and a provider-compatible honeypot. Before launch, approve a provider that enforces its own server-side validation, rate limiting or CAPTCHA, destination verification, spam filtering and appropriate CORS. Until an endpoint is configured, the form gives a clear unavailable message instead of pretending submission succeeded.
 
 ## Routes
 
@@ -61,7 +67,7 @@ To preserve the payment-only serverless boundary, contact messages submit direct
 - `/donation-policy`
 - `/refund-policy`
 
-Next.js App Router provides extension-free clean URLs. `vercel.json` also enables clean URLs and security headers.
+Next.js App Router generates trailing-slash static routes. Render serves the exported pages and applies the security headers declared in `render.yaml`.
 
 ## Content and image integrity
 
@@ -76,4 +82,4 @@ npm run typecheck
 npm run build
 ```
 
-The production build output identifies which routes are static and which are server-rendered/API routes.
+The production build creates the deployable static site in `out`.

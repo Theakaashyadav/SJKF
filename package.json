@@ -2,10 +2,13 @@
   "name": "swabhiman-foundation-website",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "22.x"
+  },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "preview": "node scripts/static-preview.mjs",
     "typecheck": "tsc --noEmit",
     "audit:visual": "node scripts/visual-audit.mjs"
   },

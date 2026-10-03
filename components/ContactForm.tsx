@@ -7,6 +7,7 @@ import { CheckCircle2, LoaderCircle, Send } from "lucide-react";
 function initialSubject(interest: string | null) {
   if (interest === "volunteer") return "Volunteer with us";
   if (interest === "partnership") return "Partnership / CSR enquiry";
+  if (interest === "donation") return "Donation assistance";
   return "General enquiry";
 }
 

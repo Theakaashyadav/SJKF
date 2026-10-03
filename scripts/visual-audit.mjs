@@ -19,6 +19,7 @@ for (const item of cases) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(`page: ${error.message}`));
   page.on("console", (message) => message.type() === "error" && errors.push(`console: ${message.text()}`));
+  page.on("response", (response) => response.status() >= 400 && errors.push(`http ${response.status()}: ${response.url()}`));
   const response = await page.goto(`http://localhost:3000${item.path}`, { waitUntil: "networkidle" });
   const metrics = await page.evaluate(() => ({
     title: document.title,

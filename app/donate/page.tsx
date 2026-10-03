@@ -15,7 +15,7 @@ export default function DonatePage() {
       <section className="section donation-page">
         <div className="container donation-layout">
           <div className="donation-main">
-            <div className="donation-title"><p className="eyebrow">Secure donation</p><h2>Give with confidence.</h2><p>Complete the form below. Payment details are entered only inside Razorpay’s secure hosted checkout.</p></div>
+            <div className="donation-title"><p className="eyebrow">Secure donation</p><h2>Give with confidence.</h2><p>Choose an amount below. Your cause, donor details and payment details are entered only inside Razorpay’s secure hosted checkout.</p></div>
             <Suspense fallback={<div className="form-loading">Preparing the secure donation form…</div>}><DonationForm /></Suspense>
           </div>
           <aside className="donation-sidebar" aria-label="Donation trust information">
@@ -27,9 +27,9 @@ export default function DonatePage() {
             </div>
             <div className="security-card">
               <h3><LockKeyhole /> Payment security</h3>
-              <p>Orders are created on the server. Payment signatures are verified before a contribution is confirmed.</p>
-              <div><ShieldCheck /><span>Gateway secret keys never enter browser code.</span></div>
-              <div><ReceiptText /><span>Acknowledgement email follows verified payment when email delivery is configured.</span></div>
+              <p>Checkout and payment confirmation are handled by Razorpay’s hosted Donations Payment Button.</p>
+              <div><ShieldCheck /><span>No gateway secret key is placed in this static website.</span></div>
+              <div><ReceiptText /><span>Razorpay can send a payment receipt when it is enabled for the button.</span></div>
             </div>
             <div className="registration-mini"><BadgeCheck /><div><span>Registered Section 8 Company</span><strong>CIN: {organization.cin}</strong><strong>DARPAN: {organization.darpanId}</strong></div></div>
             <p className="tax-note"><strong>Tax note:</strong> No 80G tax-exemption benefit is claimed on this website unless a valid applicable approval is separately published and verified.</p>
