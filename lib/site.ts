@@ -1,0 +1,193 @@
+import {
+  BookOpen,
+  BriefcaseBusiness,
+  GraduationCap,
+  HandHeart,
+  HeartPulse,
+  HouseHeart,
+  Leaf,
+  PersonStanding,
+  ShieldCheck,
+  Sparkles,
+  Sprout,
+  Stethoscope,
+  Users,
+} from "lucide-react";
+
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://example.org";
+
+export const organization = {
+  name: "SWABHIMAN JAN EVAM PASHU KALYAN FOUNDATION",
+  shortName: "Swabhiman Foundation",
+  tagline: "Serving Humanity • Protecting Animals • Empowering Communities",
+  type: "Section 8 Non-Profit Organization",
+  incorporationDate: "20 June 2026",
+  cin: "U88900UW2026NPL254691",
+  darpanId: "UP/2026/1124895",
+  state: "Uttar Pradesh",
+  addressLines: [
+    "House No. 432, Ranhera, Jewer",
+    "Gautam Buddha Nagar",
+    "Uttar Pradesh – 203155, India",
+  ],
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+} as const;
+
+export const navLinks = [
+  { href: "/", label: "Home" },
+  { href: "/about", label: "About Us" },
+  { href: "/our-work", label: "Our Work" },
+  { href: "/gallery", label: "Gallery" },
+  { href: "/donate", label: "Donate" },
+  { href: "/contact", label: "Contact" },
+] as const;
+
+export const socialLinks = [
+  { label: "Facebook", short: "f", href: process.env.NEXT_PUBLIC_FACEBOOK_URL || "" },
+  { label: "Instagram", short: "ig", href: process.env.NEXT_PUBLIC_INSTAGRAM_URL || "" },
+  { label: "LinkedIn", short: "in", href: process.env.NEXT_PUBLIC_LINKEDIN_URL || "" },
+].filter((item) => item.href.startsWith("https://"));
+
+export const focusAreas = [
+  {
+    slug: "animal-welfare",
+    title: "Animal Welfare",
+    description: "Rescue support, care, feeding, vaccination, rehabilitation and humane protection for animals in need.",
+    icon: HandHeart,
+    image: "/images/animal-welfare.jpg",
+    alt: "Street dogs eating near Howrah Bridge in Kolkata",
+  },
+  {
+    slug: "education-literacy",
+    title: "Education & Literacy",
+    description: "Learning access, books, digital resources and practical opportunities for children and young people.",
+    icon: GraduationCap,
+    image: "/images/hero-community.jpg",
+    alt: "Children and adults gathered with a street dog in an Indian neighbourhood",
+  },
+  {
+    slug: "healthcare",
+    title: "Healthcare Support",
+    description: "Preventive health awareness, medical assistance and community-based access to essential care.",
+    icon: HeartPulse,
+    image: "/images/community-support.jpg",
+    alt: "Women and a child at a rural community event in India",
+  },
+  {
+    slug: "environment",
+    title: "Environmental Protection",
+    description: "Tree plantation, cleanliness, responsible waste practices and awareness for a healthier environment.",
+    icon: Leaf,
+    image: "/images/community-support.jpg",
+    alt: "A rural community event in India",
+  },
+  {
+    slug: "women-empowerment",
+    title: "Women Empowerment",
+    description: "Skills, livelihoods and self-employment pathways that strengthen independence and participation.",
+    icon: Sparkles,
+    image: "/images/community-support.jpg",
+    alt: "Women and a child beside a social-empowerment display at a rural community event",
+  },
+  {
+    slug: "community-welfare",
+    title: "Community Welfare",
+    description: "Practical, inclusive support for vulnerable families, children, older people and rural communities.",
+    icon: Users,
+    image: "/images/community-support.jpg",
+    alt: "Women and a child at a rural community event in India",
+  },
+] as const;
+
+export const workAreas = [
+  {
+    number: "01",
+    slug: "animal-welfare",
+    title: "Animal Welfare",
+    summary: "We work to build a safer, kinder environment for stray, abandoned and vulnerable animals.",
+    aim: "Our objective is to support timely care and long-term welfare through community participation and responsible partnerships.",
+    activities: ["Rescue and rehabilitation", "Food and temporary shelter", "Veterinary care", "Vaccination and sterilization awareness", "Adoption support", "Gaushala and cattle welfare"],
+    icon: HandHeart,
+    image: "/images/animal-welfare.jpg",
+  },
+  {
+    number: "02",
+    slug: "education-literacy",
+    title: "Education & Literacy",
+    summary: "We aim to make learning more accessible for children and young people facing economic barriers.",
+    aim: "Our initiatives focus on practical learning support that helps students participate with confidence and continuity.",
+    activities: ["Books and learning materials", "Uniform support", "Digital learning access", "Libraries and reading programs", "Scholarship facilitation", "Community education"],
+    icon: BookOpen,
+    image: "/images/hero-community.jpg",
+  },
+  {
+    number: "03",
+    slug: "healthcare",
+    title: "Healthcare",
+    summary: "We work to improve awareness and access to preventive and essential healthcare in underserved communities.",
+    aim: "Our objective is to connect people with credible health information and appropriate medical support where possible.",
+    activities: ["Medical camps", "Preventive health awareness", "Health screenings", "Medical assistance", "Maternal and child health awareness", "Mobile support partnerships"],
+    icon: Stethoscope,
+    image: "/images/community-support.jpg",
+  },
+  {
+    number: "04",
+    slug: "environment",
+    title: "Environment",
+    summary: "We promote practical environmental responsibility rooted in cleaner, greener and more resilient communities.",
+    aim: "Our initiatives focus on participation—helping communities understand how everyday action supports long-term wellbeing.",
+    activities: ["Tree plantation", "Cleanliness drives", "Waste-management awareness", "Water conservation awareness", "Forest and wildlife awareness", "Sustainable practices"],
+    icon: Sprout,
+    image: "/images/community-support.jpg",
+  },
+  {
+    number: "05",
+    slug: "women-empowerment",
+    title: "Women Empowerment",
+    summary: "We aim to strengthen opportunity, financial confidence and participation for women and girls.",
+    aim: "Our objective is to support dignified livelihood pathways through skills, awareness and community-led networks.",
+    activities: ["Vocational training", "Livelihood skills", "Self-employment support", "Financial awareness", "Health and rights awareness", "Leadership development"],
+    icon: PersonStanding,
+    image: "/images/community-support.jpg",
+  },
+  {
+    number: "06",
+    slug: "youth-development",
+    title: "Youth Development",
+    summary: "We support young people in building skills, confidence and pathways toward meaningful work and service.",
+    aim: "Our initiatives focus on practical preparation, constructive participation and local opportunity.",
+    activities: ["Employability skills", "Vocational guidance", "Digital literacy", "Volunteer leadership", "Career awareness", "Entrepreneurship support"],
+    icon: BriefcaseBusiness,
+    image: "/images/hero-community.jpg",
+  },
+  {
+    number: "07",
+    slug: "community-welfare",
+    title: "Community Welfare",
+    summary: "We work alongside communities to address urgent needs while strengthening longer-term resilience.",
+    aim: "Our objective is inclusive support that respects dignity and prioritises people facing social or economic vulnerability.",
+    activities: ["Family assistance", "Child and elderly welfare", "Disability inclusion", "Rural development", "Essential-supply support", "Community awareness"],
+    icon: HouseHeart,
+    image: "/images/community-support.jpg",
+  },
+  {
+    number: "08",
+    slug: "disaster-relief",
+    title: "Disaster Relief",
+    summary: "We aim to respond to emergencies with coordinated, needs-led support for affected people and animals.",
+    aim: "Our focus is responsible relief—working with local stakeholders so essential assistance reaches where it is needed.",
+    activities: ["Food distribution", "Clothing and blankets", "Medicines and hygiene supplies", "Animal relief", "Emergency essentials", "Recovery support"],
+    icon: ShieldCheck,
+    image: "/images/community-support.jpg",
+  },
+] as const;
+
+export const causeOptions = [
+  "Animal Welfare",
+  "Education",
+  "Healthcare",
+  "Environmental Initiatives",
+  "Community Welfare",
+  "General Donation",
+] as const;
