@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   },
   webpack(config, { dev }) {
     if (config.cache && !dev) {
-      config.cache = Object.freeze({ type: "memory" });
+      config.cache = false;
     }
     return config;
   },

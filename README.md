@@ -82,4 +82,4 @@ npm run typecheck
 npm run build
 ```
 
-The production build creates the deployable static site in `out`.
+The production build creates the deployable static site in `out`, copies the complete Next.js static asset tree, and checks that every exported page's CSS, JavaScript and fonts exist before deployment. Missing assets fail the build instead of publishing an unstyled website.

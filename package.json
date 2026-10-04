@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
+    "build": "next build --webpack && node scripts/verify-static-export.mjs",
     "preview": "node scripts/static-preview.mjs",
     "typecheck": "tsc --noEmit",
     "audit:visual": "node scripts/visual-audit.mjs"
