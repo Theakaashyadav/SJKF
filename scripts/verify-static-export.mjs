@@ -31,7 +31,7 @@ for (const file of await filesIn(output)) {
       throw new Error(`Exported page has no stylesheet: ${path.relative(output, file)}`);
     }
   }
-  for (const match of contents.matchAll(/\/_next\/static\/[^\s"'<>\\)]+/g)) {
+  for (const match of contents.matchAll(/\/(?:_next\/static|images)\/[^\s"'<>\\)]+/g)) {
     const asset = match[0].split(/[?#]/)[0];
     try {
       const info = await stat(path.join(output, decodeURIComponent(asset)));
@@ -46,4 +46,4 @@ if (!pages) throw new Error("No HTML pages found in the static export.");
 if (missing.size) {
   throw new Error(`Static export references missing assets:\n${[...missing].join("\n")}`);
 }
-console.log(`Verified ${pages} static pages and their CSS, JavaScript and font assets.`);
+console.log(`Verified ${pages} static pages and their CSS, JavaScript, font and image assets.`);

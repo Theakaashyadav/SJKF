@@ -720,3 +720,10 @@ p { margin: 0; }
   .team-member__rule { margin-inline: auto; }
   .team-member__foundation { margin-inline: auto; }
 }
+
+/* Official foundation logo shared by the header and footer. */
+.brand__image { width: 17rem; max-width: 100%; height: auto; object-fit: contain; }
+.brand--light { width: fit-content; max-width: 100%; padding: 0.4rem; border-radius: 8px; background: #fff; }
+@media (max-width: 560px) {
+  .brand__image { width: min(16rem, calc(100vw - 5.5rem)); }
+}
