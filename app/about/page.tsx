@@ -38,6 +38,18 @@ const objectives = [
   "Contribute to rural development, community resilience and emergency relief.",
 ];
 
+const members = [
+  { name: "Sonu Sharma", designation: "Founder & President", image: "sonu-sharma.jpeg" },
+  { name: "Kamal Sharma", designation: "Vice President", image: "kamal-sharma.jpeg" },
+  { name: "Kulbhan Singh", designation: "Vice President", image: "kulbhan-singh.jpeg" },
+  { name: "Sagar Bhardwaj", designation: "Secretary", image: "sagar-bhardwaj.jpeg" },
+  { name: "Deepika Sharma", designation: "Secretary", image: null },
+  { name: "Shivkumar Sharma", designation: "Executive Member", image: null },
+  { name: "Neera Sharma", designation: "Joint Secretary", image: "neera-sharma.jpeg" },
+  { name: "Ramakant", designation: null, image: "ramakant.jpeg" },
+  { name: "Naresh Ji Maharaj", designation: null, image: "naresh-ji-maharaj.jpeg" },
+];
+
 export default function AboutPage() {
   return (
     <>
@@ -98,12 +110,30 @@ export default function AboutPage() {
 
       <section className="section section--soft">
         <div className="container">
-          <SectionHeading eyebrow="Governance" title="Leadership" description="Board-level leadership responsible for the foundation's direction, governance and public-interest purpose." centered />
-          <div className="leadership-grid">
-            <article><div className="profile-monogram">SS</div><div><h3>Sonu Sharma</h3><p>Director</p></div></article>
-            <article><div className="profile-monogram">KS</div><div><h3>Kamal Sharma</h3><p>Director / Board Member</p></div></article>
+          <SectionHeading eyebrow="The people behind our purpose" title="Meet Our Team" description="United by compassion and a shared commitment to serving people, protecting animals and strengthening communities." centered />
+          <div className="team-list">
+            {members.map((member, index) => (
+              <article className="team-member" key={member.name} aria-labelledby={`member-${index}`}>
+                <div className="team-member__portrait">
+                  {member.image ? (
+                    <Image src={`/images/team/${member.image}`} alt={`Portrait of ${member.name}`} fill sizes="(max-width: 700px) 85vw, 340px" />
+                  ) : (
+                    <div className="team-member__placeholder" role="img" aria-label={`Photo of ${member.name} coming soon`}>
+                      <span aria-hidden="true">{member.name.split(" ").map((part) => part[0]).join("")}</span>
+                      <small>Photo coming soon</small>
+                    </div>
+                  )}
+                </div>
+                <div className="team-member__details">
+                  <span className="team-member__number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                  <h3 id={`member-${index}`}>{member.name}</h3>
+                  {member.designation && <p className="team-member__designation">{member.designation}</p>}
+                  <span className="team-member__rule" aria-hidden="true" />
+                  <p className="team-member__foundation">Swabhiman Jan Evam Pashu Kalyan Foundation</p>
+                </div>
+              </article>
+            ))}
           </div>
-          <p className="leadership-note">Only organization-level roles are shown. Personal director identifiers and private residential information are not published.</p>
         </div>
       </section>
 

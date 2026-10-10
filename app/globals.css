@@ -697,3 +697,26 @@ p { margin: 0; }
   .transaction-page { min-height: auto; padding: 0; background: #fff; }
   .receipt-card { width: 100%; border: 0; box-shadow: none; }
 }
+.team-list { max-width: 960px; margin: 3rem auto 0; }
+.team-member { display: grid; grid-template-columns: 340px minmax(0, 1fr); align-items: center; gap: clamp(2rem, 6vw, 5rem); padding-block: 2.5rem; }
+.team-member + .team-member { border-top: 1px solid rgba(15, 76, 58, 0.12); }
+.team-member:nth-child(even) { grid-template-columns: minmax(0, 1fr) 340px; }
+.team-member:nth-child(even) .team-member__portrait { grid-column: 2; grid-row: 1; }
+.team-member:nth-child(even) .team-member__details { grid-column: 1; grid-row: 1; }
+.team-member__portrait { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius-lg); background: var(--forest-soft); box-shadow: var(--shadow-sm); }
+.team-member__portrait img { object-fit: contain; }
+.team-member__placeholder { display: flex; height: 100%; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; color: var(--forest); background: linear-gradient(145deg, #dbe8e1, #f5f4e9); }
+.team-member__placeholder > span { font-family: var(--font-heading), Georgia, serif; font-size: 5rem; }
+.team-member__placeholder small { font-size: 0.8rem; }
+.team-member__number { color: var(--gold-dark); font-size: 0.8rem; letter-spacing: 0.18em; font-weight: 800; }
+.team-member__details h3 { margin-top: 0.75rem; color: var(--forest-dark); font-size: clamp(1.8rem, 3.5vw, 2.8rem); }
+.team-member__designation { margin-top: 0.65rem; color: var(--forest); font-size: 1.05rem; font-weight: 700; }
+.team-member__rule { display: block; width: 3rem; height: 3px; margin-block: 1.5rem; background: var(--gold); }
+.team-member__foundation { max-width: 23rem; color: var(--muted); line-height: 1.8; }
+@media (max-width: 700px) {
+  .team-member, .team-member:nth-child(even) { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 2rem; }
+  .team-member .team-member__portrait, .team-member:nth-child(even) .team-member__portrait { grid-column: 1; grid-row: 1; width: min(100%, 340px); justify-self: center; }
+  .team-member .team-member__details, .team-member:nth-child(even) .team-member__details { grid-column: 1; grid-row: 2; text-align: center; }
+  .team-member__rule { margin-inline: auto; }
+  .team-member__foundation { margin-inline: auto; }
+}
