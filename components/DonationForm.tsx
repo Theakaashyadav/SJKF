@@ -65,8 +65,8 @@ export function DonationForm() {
 
         {!buttonConfigured ? (
           <div className="static-donation-fallback">
-            <div className="form-feedback form-feedback--info" role="status">Online donations are being configured. Please contact the foundation for verified contribution details.</div>
-            <Link className="button button--green button--large" href="/contact?interest=donation">Contact the foundation</Link>
+            <div className="form-feedback form-feedback--info" role="status">Razorpay checkout is being configured. You can donate using the UPI QR code or bank details above.</div>
+            <a className="button button--green button--large" href="#direct-donation">View UPI &amp; bank details</a>
           </div>
         ) : null}
 

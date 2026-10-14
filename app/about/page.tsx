@@ -1,53 +1,24 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  BadgeCheck,
-  Equal,
-  Eye,
-  HandHeart,
-  Heart,
-  Leaf,
-  Scale,
-  ShieldCheck,
-  Sparkles,
-} from "lucide-react";
+import { BadgeCheck, ShieldCheck, Sparkles } from "lucide-react";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { organization } from "@/lib/site";
 import { buildPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = buildPageMetadata("About Us | Swabhiman Jan Evam Pashu Kalyan Foundation", "Learn about Swabhiman Foundation's purpose, vision, mission, values, leadership and verified registration details.", "/about");
-
-const values = [
-  { name: "Compassion", text: "We respond to need with empathy and respect for every life.", icon: Heart },
-  { name: "Integrity", text: "We act honestly, responsibly and in the public interest.", icon: Scale },
-  { name: "Transparency", text: "We communicate our identity, intentions and use of support clearly.", icon: Eye },
-  { name: "Equality", text: "We believe dignity and opportunity should be accessible to all.", icon: Equal },
-  { name: "Responsibility", text: "We plan carefully and remain accountable for our actions.", icon: ShieldCheck },
-  { name: "Sustainability", text: "We seek solutions that protect tomorrow as well as today.", icon: Leaf },
-  { name: "Service", text: "We put community needs and shared wellbeing at the centre.", icon: HandHeart },
-];
-
-const objectives = [
-  "Support humane animal rescue, care, rehabilitation and protection.",
-  "Expand access to education, literacy resources and practical skills.",
-  "Promote preventive healthcare awareness and responsible medical support.",
-  "Encourage environmental protection, cleanliness and sustainable practices.",
-  "Strengthen women, youth, children and economically vulnerable families.",
-  "Contribute to rural development, community resilience and emergency relief.",
-];
+export const metadata: Metadata = buildPageMetadata("About Us | Swabhiman Jan Evam Pashu Kalyan Foundation", "Learn about Swabhiman Foundation's purpose, story, leadership and verified registration details.", "/about");
 
 const members = [
   { name: "Sonu Sharma", designation: "Founder & President", image: "sonu-sharma.jpeg" },
   { name: "Kamal Sharma", designation: "Vice President", image: "kamal-sharma.jpeg" },
   { name: "Kulbhan Singh", designation: "Vice President", image: "kulbhan-singh.jpeg" },
   { name: "Sagar Bhardwaj", designation: "Secretary", image: "sagar-bhardwaj.jpeg" },
-  { name: "Deepika Sharma", designation: "Secretary", image: null },
-  { name: "Shivkumar Sharma", designation: "Executive Member", image: null },
+  { name: "Shivkumar Sharma", designation: "Executive Member", image: "shivkumar-sharma.jpeg" },
+  { name: "Santosh Yadav", designation: "Executive Member", image: "santosh-yadav.jpeg" },
   { name: "Neera Sharma", designation: "Joint Secretary", image: "neera-sharma.jpeg" },
   { name: "Ramakant", designation: null, image: "ramakant.jpeg" },
-  { name: "Naresh Ji Maharaj", designation: null, image: "naresh-ji-maharaj.jpeg" },
+  { name: "Naresh Kumar Sharma", designation: "Patron", image: "naresh-kumar-sharma.jpeg" },
 ];
 
 export default function AboutPage() {
@@ -69,42 +40,6 @@ export default function AboutPage() {
               <p>As a new organization, we are building responsibly: establishing strong partnerships, listening to local needs and creating a transparent foundation for long-term service.</p>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="section section--forest">
-        <div className="container vision-mission-grid">
-          <article>
-            <span>Vision</span>
-            <h2>A society where every life can move forward with dignity.</h2>
-            <p>To help create a society where people, animals and communities can live with dignity, opportunity, compassion and sustainable support.</p>
-          </article>
-          <article>
-            <span>Mission</span>
-            <h2>Sustainable action rooted in service and responsibility.</h2>
-            <p>To undertake sustainable initiatives in animal welfare, education, healthcare, environmental conservation and community development while empowering vulnerable sections of society.</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="section section--soft">
-        <div className="container">
-          <SectionHeading eyebrow="What guides us" title="Our Core Values" description="These principles shape how we plan, partner, communicate and serve." centered />
-          <div className="values-grid">
-            {values.map((value) => {
-              const Icon = value.icon;
-              return <article key={value.name}><Icon /><h3>{value.name}</h3><p>{value.text}</p></article>;
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section className="section">
-        <div className="container objectives-grid">
-          <SectionHeading eyebrow="Our objectives" title="A Connected Approach to Community Wellbeing" description="Our registered objectives cover interrelated areas of need, allowing initiatives to be shaped responsibly around local context." />
-          <ol className="objective-list">
-            {objectives.map((objective, index) => <li key={objective}><span>{String(index + 1).padStart(2, "0")}</span><p>{objective}</p></li>)}
-          </ol>
         </div>
       </section>
 

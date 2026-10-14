@@ -9,7 +9,7 @@ import { navLinks } from "@/lib/site";
 
 export function Header() {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
+  const pathname = usePathname().replace(/\/+$/, "") || "/";
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileNavRef = useRef<HTMLDivElement>(null);
 

@@ -58,6 +58,7 @@ Contact messages submit directly from the validated static form to the configure
 - `/about`
 - `/our-work`
 - `/gallery`
+- `/documents`
 - `/donate`
 - `/contact`
 - `/payment-success`
@@ -72,6 +73,8 @@ Next.js App Router generates trailing-slash static routes. Render serves the exp
 ## Content and image integrity
 
 Organization facts were cross-checked against the supplied MCA and DARPAN records. The draft ISO document is not used as a public certification claim. The site makes no 80G claim.
+
+The Documents page previews registration and governance PDFs stored in `public/documents/`. Its titles, descriptions and file sizes are listed in `lib/documents.ts`. To add or replace a document, update the PDF and its corresponding entry, then rebuild the static site. Drafts, tax cards and individual DIN letters are not included in the public library.
 
 Development photographs are licensed Pexels stock images. The gallery labels them as placeholders and never presents them as completed foundation work. Provenance is recorded in `public/images/README.md`; replace them with consented, verified project media as it becomes available.
 
