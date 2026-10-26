@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata("Donate | Support Swabhiman 
 export default function DonatePage() {
   return (
     <>
-      <PageHero eyebrow="Make a contribution" title="Your Support Can Change a Life." description="Choose a cause and contribute toward meaningful change for people, animals and communities." image="/images/animal-welfare.jpg" />
+      <PageHero eyebrow="Make a contribution" title="Your Support Can Change a Life." description="Choose a cause and contribute toward meaningful change for people, animals and communities." image="/images/stock/donate-support.jpg" />
       <section className="section donation-page">
         <div className="container"><DirectDonation /></div>
         <div className="container donation-layout">

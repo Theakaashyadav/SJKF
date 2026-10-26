@@ -36,6 +36,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     name: organization.name,
     url: SITE_URL,
     slogan: organization.tagline,
+    email: organization.email,
+    telephone: organization.phone,
     identifier: [
       { "@type": "PropertyValue", name: "CIN", value: organization.cin },
       { "@type": "PropertyValue", name: "NGO DARPAN ID", value: organization.darpanId },

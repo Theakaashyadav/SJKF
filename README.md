@@ -31,7 +31,7 @@ Do not add a start command or `PORT`. Add the public settings from `.env.example
 Set these public build-time variables in the hosting project:
 
 - `NEXT_PUBLIC_SITE_URL`: canonical custom-domain origin, for example `https://example.org`; when omitted on Render, the build uses `RENDER_EXTERNAL_URL`
-- `NEXT_PUBLIC_CONTACT_EMAIL` and `NEXT_PUBLIC_CONTACT_PHONE`: verified public contact details
+- `NEXT_PUBLIC_CONTACT_EMAIL` and `NEXT_PUBLIC_CONTACT_PHONE`: optional overrides for the published contact details, `swabhimanfoundation2026@gmail.com` and `+91 97617 73131`
 - `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT`: HTTPS endpoint from a secure static-form provider such as Formspree or Basin
 - `NEXT_PUBLIC_RAZORPAY_PAYMENT_BUTTON_ID`: public `pl_...` ID of a live Razorpay Donations Payment Button
 

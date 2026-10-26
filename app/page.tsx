@@ -82,7 +82,7 @@ export default function HomePage() {
               return (
                 <article className="cause-card" key={area.title}>
                   <div className="cause-card__image">
-                    <Image src={area.image} alt={area.alt} fill sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" />
+                    <Image src={area.image} alt={area.alt} style={{ objectPosition: "imagePosition" in area ? area.imagePosition : undefined }} fill sizes="(max-width: 720px) 100vw, (max-width: 1100px) 50vw, 33vw" />
                   </div>
                   <div className="cause-card__body">
                     <span className="cause-card__icon"><Icon /></span>
@@ -102,7 +102,7 @@ export default function HomePage() {
       <section className="section feature-split">
         <div className="container feature-split__grid">
           <div className="feature-split__media">
-            <Image src="/images/animal-welfare.jpg" alt="Street dogs eating near Howrah Bridge in Kolkata" fill sizes="(max-width: 900px) 100vw, 50vw" />
+            <Image src="/images/stock/animal-care-feature.jpg" alt="A volunteer providing food to rescued dogs at an animal shelter" fill sizes="(max-width: 900px) 100vw, 50vw" />
             <div className="feature-split__note"><HandHeart /><span>Care that protects dignity and wellbeing</span></div>
           </div>
           <div className="feature-split__content">
@@ -157,7 +157,7 @@ export default function HomePage() {
       </section>
 
       <section className="donation-cta">
-        <Image src="/images/community-support.jpg" alt="" fill sizes="100vw" />
+        <Image src="/images/stock/home-donation.jpg" alt="" fill sizes="100vw" />
         <div className="donation-cta__overlay" />
         <div className="container donation-cta__content">
           <span className="donation-cta__icon"><HandHeart /></span>

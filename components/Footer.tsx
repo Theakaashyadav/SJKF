@@ -39,8 +39,8 @@ export function Footer() {
           <h2 className="footer-heading">Registered office</h2>
           <ul className="footer-contact">
             <li><MapPin aria-hidden="true" /><span>{organization.addressLines.join(", ")}</span></li>
-            <li><Mail aria-hidden="true" /><span>{organization.email || "Official email to be published"}</span></li>
-            <li><Phone aria-hidden="true" /><span>{organization.phone || "Official phone number to be published"}</span></li>
+            <li><Mail aria-hidden="true" /><a href={`mailto:${organization.email}`}>{organization.email}</a></li>
+            <li><Phone aria-hidden="true" /><a href={`tel:${organization.phone.replace(/[^\d+]/g, "")}`}>{organization.phone}</a></li>
           </ul>
         </div>
       </div>

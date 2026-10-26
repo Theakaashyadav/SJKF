@@ -15,6 +15,7 @@ export default function DocumentsPage() {
       <PageHero
         eyebrow="Transparency & trust"
         title="Our Documents"
+        image="/images/stock/documents-records.jpg"
         description="Explore our registration and governance records. Select a PDF to view it here, open it in a new tab or download a copy."
       />
       <section className="section section--soft documents-section" aria-label="Foundation documents">

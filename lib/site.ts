@@ -30,8 +30,8 @@ export const organization = {
     "Gautam Buddha Nagar",
     "Uttar Pradesh – 203155, India",
   ],
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "",
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE || "",
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "swabhimanfoundation2026@gmail.com",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim() || "+91 97617 73131",
 } as const;
 
 export const navLinks = [
@@ -64,24 +64,25 @@ export const focusAreas = [
     title: "Education & Literacy",
     description: "Learning access, books, digital resources and practical opportunities for children and young people.",
     icon: GraduationCap,
-    image: "/images/hero-community.jpg",
-    alt: "Children and adults gathered with a street dog in an Indian neighbourhood",
+    image: "/images/stock/focus-education.jpg",
+    alt: "Two children in school uniforms studying together at a classroom desk",
   },
   {
     slug: "healthcare",
     title: "Healthcare Support",
     description: "Preventive health awareness, medical assistance and community-based access to essential care.",
     icon: HeartPulse,
-    image: "/images/community-support.jpg",
-    alt: "Women and a child at a rural community event in India",
+    image: "/images/stock/focus-healthcare.jpg",
+    alt: "A healthcare professional examining a patient with a stethoscope",
   },
   {
     slug: "environment",
     title: "Environmental Protection",
     description: "Tree plantation, cleanliness, responsible waste practices and awareness for a healthier environment.",
     icon: Leaf,
-    image: "/images/community-support.jpg",
-    alt: "A rural community event in India",
+    image: "/images/stock/focus-environment.jpg",
+    imagePosition: "50% 15%",
+    alt: "Hands holding a young seedling ready for planting",
   },
   {
     slug: "women-empowerment",
@@ -96,8 +97,8 @@ export const focusAreas = [
     title: "Community Welfare",
     description: "Practical, inclusive support for vulnerable families, children, older people and rural communities.",
     icon: Users,
-    image: "/images/community-support.jpg",
-    alt: "Women and a child at a rural community event in India",
+    image: "/images/stock/focus-community.jpg",
+    alt: "An older woman in a sari standing outside a neighbourhood shop in India",
   },
 ] as const;
 
@@ -110,7 +111,9 @@ export const workAreas = [
     aim: "Our objective is to support timely care and long-term welfare through community participation and responsible partnerships.",
     activities: ["Rescue and rehabilitation", "Food and temporary shelter", "Veterinary care", "Vaccination and sterilization awareness", "Adoption support", "Gaushala and cattle welfare"],
     icon: HandHeart,
-    image: "/images/animal-welfare.jpg",
+    image: "/images/stock/work-animal-welfare.jpg",
+    imagePosition: "50% 90%",
+    alt: "An Indian cow standing in a green pasture in Coimbatore",
   },
   {
     number: "02",
@@ -120,7 +123,8 @@ export const workAreas = [
     aim: "Our initiatives focus on practical learning support that helps students participate with confidence and continuity.",
     activities: ["Books and learning materials", "Uniform support", "Digital learning access", "Libraries and reading programs", "Scholarship facilitation", "Community education"],
     icon: BookOpen,
-    image: "/images/hero-community.jpg",
+    image: "/images/stock/work-education.jpg",
+    alt: "Schoolchildren in uniform listening together in an Indian classroom",
   },
   {
     number: "03",
@@ -130,7 +134,8 @@ export const workAreas = [
     aim: "Our objective is to connect people with credible health information and appropriate medical support where possible.",
     activities: ["Medical camps", "Preventive health awareness", "Health screenings", "Medical assistance", "Maternal and child health awareness", "Mobile support partnerships"],
     icon: Stethoscope,
-    image: "/images/community-support.jpg",
+    image: "/images/stock/work-healthcare.jpg",
+    alt: "A doctor using a stethoscope during a patient examination",
   },
   {
     number: "04",
@@ -140,7 +145,8 @@ export const workAreas = [
     aim: "Our initiatives focus on participation—helping communities understand how everyday action supports long-term wellbeing.",
     activities: ["Tree plantation", "Cleanliness drives", "Waste-management awareness", "Water conservation awareness", "Forest and wildlife awareness", "Sustainable practices"],
     icon: Sprout,
-    image: "/images/community-support.jpg",
+    image: "/images/stock/work-environment.jpg",
+    alt: "A volunteer planting a young tree in a green outdoor space",
   },
   {
     number: "05",
@@ -150,7 +156,8 @@ export const workAreas = [
     aim: "Our objective is to support dignified livelihood pathways through skills, awareness and community-led networks.",
     activities: ["Vocational training", "Livelihood skills", "Self-employment support", "Financial awareness", "Health and rights awareness", "Leadership development"],
     icon: PersonStanding,
-    image: "/images/community-support.jpg",
+    image: "/images/stock/work-women.jpg",
+    alt: "Women working with sewing machines in an Indian dressmaking workshop",
   },
   {
     number: "06",
@@ -160,7 +167,8 @@ export const workAreas = [
     aim: "Our initiatives focus on practical preparation, constructive participation and local opportunity.",
     activities: ["Employability skills", "Vocational guidance", "Digital literacy", "Volunteer leadership", "Career awareness", "Entrepreneurship support"],
     icon: BriefcaseBusiness,
-    image: "/images/hero-community.jpg",
+    image: "/images/stock/work-youth.jpg",
+    alt: "Young students in India studying together with books and a laptop",
   },
   {
     number: "07",
@@ -170,7 +178,8 @@ export const workAreas = [
     aim: "Our objective is inclusive support that respects dignity and prioritises people facing social or economic vulnerability.",
     activities: ["Family assistance", "Child and elderly welfare", "Disability inclusion", "Rural development", "Essential-supply support", "Community awareness"],
     icon: HouseHeart,
-    image: "/images/community-support.jpg",
+    image: "/images/stock/work-community.jpg",
+    alt: "Residents gathered outdoors beneath trees in an Indian village",
   },
   {
     number: "08",
@@ -180,7 +189,8 @@ export const workAreas = [
     aim: "Our focus is responsible relief—working with local stakeholders so essential assistance reaches where it is needed.",
     activities: ["Food distribution", "Clothing and blankets", "Medicines and hygiene supplies", "Animal relief", "Emergency essentials", "Recovery support"],
     icon: ShieldCheck,
-    image: "/images/community-support.jpg",
+    image: "/images/stock/work-relief.jpg",
+    alt: "Volunteers preparing boxes of food and medicine for relief distribution",
   },
 ] as const;
 

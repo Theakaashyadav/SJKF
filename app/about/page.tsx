@@ -24,12 +24,12 @@ const members = [
 export default function AboutPage() {
   return (
     <>
-      <PageHero eyebrow="About us" title="About Swabhiman Foundation" description="Compassion, responsibility and sustainable change—brought together through service." image="/images/hero-community.jpg" />
+      <PageHero eyebrow="About us" title="About Swabhiman Foundation" description="Compassion, responsibility and sustainable change—brought together through service." image="/images/stock/about-teamwork.jpg" />
 
       <section className="section">
         <div className="container story-grid">
           <div className="story-media">
-            <Image src="/images/community-support.jpg" alt="Women and a child at a rural community event in India" fill sizes="(max-width: 850px) 100vw, 45vw" />
+            <Image src="/images/stock/about-rural-life.jpg" alt="An older woman sitting beside cattle outside a village home in Maharashtra" fill sizes="(max-width: 850px) 100vw, 45vw" />
             <div className="stock-disclosure">Representative photography · Not an organizational project record</div>
           </div>
           <div>

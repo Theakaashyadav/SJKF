@@ -11,7 +11,7 @@ export const metadata: Metadata = buildPageMetadata("Gallery & Impact | Swabhima
 export default function GalleryPage() {
   return (
     <>
-      <PageHero eyebrow="Gallery & impact" title="Stories of Compassion & Change" description="A home for verified project moments, community stories and responsible impact documentation." image="/images/hero-community.jpg" />
+      <PageHero eyebrow="Gallery & impact" title="Stories of Compassion & Change" description="A home for verified project moments, community stories and responsible impact documentation." image="/images/stock/gallery-storytelling.jpg" />
       <section className="section">
         <div className="container">
           <div className="gallery-intro">

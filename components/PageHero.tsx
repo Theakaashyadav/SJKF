@@ -4,12 +4,12 @@ export function PageHero({
   eyebrow,
   title,
   description,
-  image = "/images/community-support.jpg",
+  image,
 }: {
   eyebrow: string;
   title: string;
   description: string;
-  image?: string;
+  image: string;
 }) {
   return (
     <section className="page-hero">

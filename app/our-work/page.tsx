@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata("Our Work | Animal Welfare &
 export default function OurWorkPage() {
   return (
     <>
-      <PageHero eyebrow="Our work" title="Creating Meaningful Change Where It Matters Most" description="Our work is designed around responsible action, local participation and care that respects the dignity of every life." image="/images/community-support.jpg" />
+      <PageHero eyebrow="Our work" title="Creating Meaningful Change Where It Matters Most" description="Our work is designed around responsible action, local participation and care that respects the dignity of every life." image="/images/stock/work-volunteers.jpg" />
       <section className="section work-intro">
         <div className="container work-intro__inner">
           <SectionHeading eyebrow="Connected priorities" title="One Mission, Many Paths to Change" description="Each focus area is part of a wider commitment to resilient communities. As a growing organization, we describe what we aim to do—not achievements that have not yet been evidenced." />
@@ -27,7 +27,7 @@ export default function OurWorkPage() {
             <section className={`work-section ${index % 2 ? "work-section--reverse" : ""}`} id={area.slug} key={area.slug}>
               <div className="container work-section__grid">
                 <div className="work-section__media">
-                  <Image src={area.image} alt="Representative Indian community context for this area of work" fill sizes="(max-width: 900px) 100vw, 50vw" />
+                  <Image src={area.image} alt={area.alt} style={{ objectPosition: "imagePosition" in area ? area.imagePosition : undefined }} fill sizes="(max-width: 900px) 100vw, 50vw" />
                   <span>Representative photography · Project media to be added after verification</span>
                 </div>
                 <div className="work-section__content">

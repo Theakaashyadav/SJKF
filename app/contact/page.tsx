@@ -12,7 +12,7 @@ export const metadata: Metadata = buildPageMetadata("Contact Us | Swabhiman Foun
 export default function ContactPage() {
   return (
     <>
-      <PageHero eyebrow="Contact us" title="Let’s Create Change Together" description="Whether you want to volunteer, partner or support a cause, we welcome a thoughtful conversation." image="/images/community-support.jpg" />
+      <PageHero eyebrow="Contact us" title="Let’s Create Change Together" description="Whether you want to volunteer, partner or support a cause, we welcome a thoughtful conversation." image="/images/stock/contact-conversation.jpg" />
       <section className="section">
         <div className="container contact-layout">
           <div className="contact-details">
@@ -21,8 +21,8 @@ export default function ContactPage() {
             <p>Use the form for general questions, volunteering, responsible partnerships or donation assistance. We will route your message to the appropriate person.</p>
             <div className="contact-list">
               <div><span><MapPin /></span><p><strong>Registered office</strong>{organization.addressLines.map((line) => <span key={line}>{line}</span>)}</p></div>
-              <div><span><Mail /></span><p><strong>Email</strong><span>{organization.email || "Official email will be published after verification"}</span></p></div>
-              <div><span><Phone /></span><p><strong>Phone</strong><span>{organization.phone || "Official phone number will be published after verification"}</span></p></div>
+              <div><span><Mail /></span><p><strong>Email</strong><a href={`mailto:${organization.email}`}>{organization.email}</a></p></div>
+              <div><span><Phone /></span><p><strong>Phone</strong><a href={`tel:${organization.phone.replace(/[^\d+]/g, "")}`}>{organization.phone}</a></p></div>
             </div>
             <p className="contact-safety">Please do not send Aadhaar numbers, card details, banking passwords or other sensitive personal documents through this form.</p>
           </div>

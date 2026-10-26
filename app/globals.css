@@ -555,6 +555,8 @@ p { margin: 0; }
 .contact-list > div { display: flex; align-items: flex-start; gap: 0.9rem; }
 .contact-list > div > span { display: grid; width: 2.7rem; height: 2.7rem; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--forest-soft); color: var(--forest); }
 .contact-list svg { width: 1.1rem; }
+.contact-list a, .footer-contact a { overflow-wrap: anywhere; text-underline-offset: 3px; }
+.contact-list a:hover, .footer-contact a:hover { text-decoration: underline; }
 .contact-list p { display: flex; flex-direction: column; color: var(--muted); font-size: 0.78rem; }
 .contact-list strong { margin-bottom: 0.2rem; color: var(--forest-dark); font-size: 0.85rem; }
 .contact-safety { margin-top: 2rem; padding: 0.8rem 1rem; border-left: 3px solid var(--gold); background: var(--cream); color: var(--muted); font-size: 0.72rem; }

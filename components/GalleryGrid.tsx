@@ -7,12 +7,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 const filters = ["All", "Animal Welfare", "Education", "Healthcare", "Environment", "Community"] as const;
 
 const items = [
-  { id: 1, category: "Animal Welfare", title: "Animal Welfare Media Placeholder", image: "/images/animal-welfare.jpg", location: "Representative stock image · Kolkata", date: "Project date awaiting verification", description: "Reserved for verified photographs of rescue, feeding, veterinary care or animal protection initiatives." },
-  { id: 2, category: "Community", title: "Community Development Media Placeholder", image: "/images/community-support.jpg", location: "Representative stock image · India", date: "Project date awaiting verification", description: "Reserved for verified community development, livelihood or outreach documentation." },
-  { id: 3, category: "Education", title: "Education Media Placeholder", image: "/images/hero-community.jpg", location: "Representative stock image · Howrah", date: "Project date awaiting verification", description: "Reserved for verified photographs of education, learning-material or literacy initiatives." },
-  { id: 4, category: "Healthcare", title: "Healthcare Media Placeholder", image: "/images/community-support.jpg", location: "Representative stock image · India", date: "Project date awaiting verification", description: "Reserved for verified documentation from a medical camp, awareness activity or healthcare partnership." },
-  { id: 5, category: "Environment", title: "Environment Media Placeholder", image: "/images/hero-community.jpg", location: "Representative stock image · India", date: "Project date awaiting verification", description: "Reserved for verified photographs of plantation, cleanliness or environmental awareness initiatives." },
-  { id: 6, category: "Animal Welfare", title: "Rescue & Care Media Placeholder", image: "/images/animal-welfare.jpg", location: "Representative stock image · Kolkata", date: "Project date awaiting verification", description: "Reserved for verified photographs and context from an animal care or rehabilitation activity." },
+  { id: 1, category: "Animal Welfare", title: "Animal Welfare Media Placeholder", image: "/images/stock/gallery-animal-shelter.jpg", alt: "A white and brown dog looking out from an animal shelter", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of rescue, feeding, veterinary care or animal protection initiatives." },
+  { id: 2, category: "Community", title: "Community Development Media Placeholder", image: "/images/stock/gallery-community.jpg", alt: "A volunteer handing over a box of groceries for community support", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified community development, livelihood or outreach documentation." },
+  { id: 3, category: "Education", title: "Education Media Placeholder", image: "/images/stock/gallery-education.jpg", alt: "Children sitting at desks during a lesson in an Indian classroom", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of education, learning-material or literacy initiatives." },
+  { id: 4, category: "Healthcare", title: "Healthcare Media Placeholder", image: "/images/stock/gallery-healthcare.jpg", alt: "A doctor reviewing notes during a consultation with a patient", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified documentation from a medical camp, awareness activity or healthcare partnership." },
+  { id: 5, category: "Environment", title: "Environment Media Placeholder", image: "/images/stock/gallery-environment.jpg", alt: "Two volunteers picking up litter with gloves and collection bags", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of plantation, cleanliness or environmental awareness initiatives." },
+  { id: 6, category: "Animal Welfare", title: "Rescue & Care Media Placeholder", image: "/images/stock/gallery-veterinary-care.jpg", alt: "A veterinarian and a volunteer examining a dog in a clinic", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs and context from an animal care or rehabilitation activity." },
 ] as const;
 
 export function GalleryGrid() {
@@ -44,7 +44,7 @@ export function GalleryGrid() {
       <div className="gallery-grid" aria-live="polite">
         {filtered.map((item, index) => (
           <button type="button" className={`gallery-card gallery-card--${(index % 3) + 1}`} key={item.id} onClick={() => setSelected(item)} aria-label={`Open ${item.title}`}>
-            <Image src={item.image} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+            <Image src={item.image} alt={item.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
             <span className="gallery-card__tag">{item.category}</span>
             <span className="gallery-card__placeholder">Development placeholder</span>
             <span className="gallery-card__content"><strong>{item.title}</strong><span>View details <Expand /></span></span>
@@ -56,7 +56,7 @@ export function GalleryGrid() {
         <div className="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" onMouseDown={(event) => event.currentTarget === event.target && setSelected(null)} onKeyDown={(event) => { if (event.key === "Tab") { event.preventDefault(); closeButtonRef.current?.focus(); } }}>
           <div className="lightbox__panel">
             <button ref={closeButtonRef} className="lightbox__close" type="button" onClick={() => setSelected(null)} aria-label="Close gallery item"><X /></button>
-            <div className="lightbox__image"><Image src={selected.image} alt="Representative stock photography for future project documentation" fill sizes="90vw" /></div>
+            <div className="lightbox__image"><Image src={selected.image} alt={selected.alt} fill sizes="90vw" /></div>
             <div className="lightbox__body">
               <span className="gallery-card__tag">{selected.category}</span>
               <h2 id="lightbox-title">{selected.title}</h2>
