@@ -10,8 +10,9 @@ import { buildPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = buildPageMetadata("About Us | Swabhiman Jan Evam Pashu Kalyan Foundation", "Learn about Swabhiman Foundation's purpose, story, leadership and verified registration details.", "/about");
 
 const members = [
-  { name: "Naresh Kumar Sharma", designation: "Patron (संरक्षक)", image: "naresh-kumar-sharma.jpeg" },
+  { name: "NARESH JI MAHARAJ", designation: "Spokesperson", image: "naresh-ji-maharaj.jpeg" },
   { name: "Sonu Sharma", designation: "Founder & President", image: "sonu-sharma.jpeg" },
+  { name: "Naresh Kumar Sharma", designation: "Patron (संरक्षक)", image: "naresh-kumar-sharma.jpeg" },
   { name: "Kamal Sharma", designation: "Vice President", image: "kamal-sharma.jpeg" },
   { name: "Kulbhan Singh", designation: "Vice President", image: "kulbhan-singh.jpeg" },
   { name: "Sagar Bhardwaj", designation: "Secretary", image: "sagar-bhardwaj.jpeg" },
@@ -19,7 +20,6 @@ const members = [
   { name: "Santosh Yadav", designation: "Executive Member", image: "santosh-yadav.jpeg" },
   { name: "Neera Sharma", designation: "Joint Secretary", image: "neera-sharma.jpeg" },
   { name: "Ramakant", designation: null, image: "ramakant.jpeg" },
-  { name: "NARESH JI MAHARAJ", designation: "Spokesperson", image: "naresh-ji-maharaj.jpeg" },
 ];
 
 export default function AboutPage() {
@@ -61,7 +61,6 @@ export default function AboutPage() {
                   )}
                 </div>
                 <div className="team-member__details">
-                  <span className="team-member__number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
                   <h3 id={`member-${index}`}>{member.name}</h3>
                   {member.designation && <p className="team-member__designation">{member.designation}</p>}
                   <span className="team-member__rule" aria-hidden="true" />

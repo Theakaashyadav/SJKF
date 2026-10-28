@@ -13,7 +13,7 @@ const items = [
   { id: 5, category: "Education", title: "Learning & Discussion", image: "/images/gallery/learning-discussion.jpeg", alt: "Participants seated in a training room during a presentation", description: "Participants coming together for a presentation and discussion." },
 ] as const;
 
-export function GalleryGrid() {
+export function GalleryGrid({ preview = false }: { preview?: boolean }) {
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
   const [selected, setSelected] = useState<(typeof items)[number] | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -36,13 +36,15 @@ export function GalleryGrid() {
 
   return (
     <>
-      <div className="gallery-filters" role="group" aria-label="Filter gallery">
-        {filters.map((item) => <button type="button" key={item} onClick={() => setFilter(item)} className={filter === item ? "is-active" : ""} aria-pressed={filter === item}>{item}</button>)}
-      </div>
-      <div className="gallery-grid" aria-live="polite">
+      {!preview && (
+        <div className="gallery-filters" role="group" aria-label="Filter gallery">
+          {filters.map((item) => <button type="button" key={item} onClick={() => setFilter(item)} className={filter === item ? "is-active" : ""} aria-pressed={filter === item}>{item}</button>)}
+        </div>
+      )}
+      <div className={`gallery-grid${preview ? " gallery-grid--preview" : ""}`} aria-live="polite">
         {filtered.map((item, index) => (
           <button type="button" className={`gallery-card gallery-card--${(index % 3) + 1}`} key={item.id} onClick={() => setSelected(item)} aria-label={`Open ${item.title}`}>
-            <Image src={item.image} alt={item.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
+            <Image src={item.image} alt={item.alt} fill sizes={preview ? "(max-width: 560px) 100vw, (max-width: 820px) 50vw, 25vw" : "(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw"} />
             <span className="gallery-card__tag">{item.category}</span>
             <span className="gallery-card__content"><strong>{item.title}</strong><span>View details <Expand /></span></span>
           </button>

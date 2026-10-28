@@ -12,6 +12,7 @@ import {
   Users,
 } from "lucide-react";
 import { SectionHeading } from "@/components/SectionHeading";
+import { GalleryGrid } from "@/components/GalleryGrid";
 import { focusAreas, organization } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -52,6 +53,16 @@ export default function HomePage() {
             <p><strong>Uttar Pradesh</strong><span>Registered state</span></p>
             <p><strong>People & animals</strong><span>One compassionate mission</span></p>
             <p><strong>Transparent by design</strong><span>Public registration details</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section--soft home-gallery" aria-label="Photo gallery">
+        <div className="container">
+          <SectionHeading eyebrow="Our photo gallery" title="Moments of Care & Community" description="Explore photographs of animal care, community gatherings and learning. Select any photo for a closer look." centered />
+          <GalleryGrid preview />
+          <div className="home-gallery__actions">
+            <Link className="button button--green" href="/gallery">View full gallery <ArrowRight /></Link>
           </div>
         </div>
       </section>

@@ -76,7 +76,7 @@ Organization facts were cross-checked against the supplied MCA and DARPAN record
 
 The Documents page previews the ISO 9001 document, registration and governance PDFs stored in `public/documents/`. Its titles, descriptions and file sizes are listed in `lib/documents.ts`. To add or replace a document, update the PDF and its corresponding entry, then rebuild the static site. Drafts, tax cards and individual DIN letters are not included in the public library.
 
-The gallery uses four photographs supplied in `Images/Gallery`; duplicate copies are displayed only once. Gallery captions describe the visible content without inferring event dates or locations. Other illustrative photographs are licensed Pexels stock images. Provenance is recorded in `public/images/README.md`.
+The homepage and gallery share four photographs supplied in `Images/Gallery`; duplicate copies are displayed only once. The homepage shows a compact photo grid with the same enlarged photo viewer as the gallery page. Gallery captions describe the visible content without inferring event dates or locations. Other illustrative photographs are licensed Pexels stock images. Provenance is recorded in `public/images/README.md`.
 
 ## Verification
 

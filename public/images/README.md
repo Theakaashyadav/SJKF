@@ -2,14 +2,14 @@
 
 The stock photographs listed below are available under the [Pexels License](https://www.pexels.com/license/). They illustrate the foundation's intended areas of work and must not be presented as records of completed Swabhiman Foundation projects.
 
-The gallery uses owner-supplied photographs from `Images/Gallery`, with exact duplicate files shown only once. Its thumbnails and enlarged views show the same selected photograph; the community gathering photo also appears in the gallery hero. Dates and locations are not inferred from WhatsApp filenames. The foundation logo and donation QR code remain consistent wherever required.
+The homepage and gallery use owner-supplied photographs from `Images/Gallery`, with exact duplicate files shown only once. Both pages share the same photo grid and enlarged photo viewer; the community gathering photo also appears in the gallery hero. Dates and locations are not inferred from WhatsApp filenames. The foundation logo and donation QR code remain consistent wherever required.
 
 | Supplied asset | Original file in `Images/` | Placement |
 | --- | --- | --- |
-| gallery/cattle-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.22 PM.jpeg | Gallery cattle care card |
-| gallery/veterinary-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.23 PM.jpeg | Gallery veterinary care card |
-| gallery/community-gathering.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (1).jpeg | Gallery community card and hero |
-| gallery/learning-discussion.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM.jpeg | Gallery learning card |
+| gallery/cattle-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.22 PM.jpeg | Homepage and gallery cattle care card |
+| gallery/veterinary-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.23 PM.jpeg | Homepage and gallery veterinary care card |
+| gallery/community-gathering.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (1).jpeg | Homepage, gallery community card and gallery hero |
+| gallery/learning-discussion.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM.jpeg | Homepage and gallery learning card |
 | team/s-k-bhardwaj.jpeg | S k Bhardwaj.jpeg | About page Executive Member portrait |
 | team/naresh-ji-maharaj.jpeg | NARESH JI MAHARAJ.jpeg | About page Spokesperson portrait |
 
