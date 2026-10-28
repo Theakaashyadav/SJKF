@@ -10,7 +10,6 @@ const items = [
   { id: 1, category: "Animal Welfare", title: "Cattle Care at the Shelter", image: "/images/gallery/cattle-care.jpeg", alt: "People assisting with care for a cow inside a cattle shelter", description: "A moment of hands-on animal care at a cattle shelter, shared in the foundation's gallery." },
   { id: 2, category: "Animal Welfare", title: "Veterinary Care for Cattle", image: "/images/gallery/veterinary-care.jpeg", alt: "A group helping with the treatment of a cow at a cattle shelter", description: "People working together to support the treatment and care of cattle." },
   { id: 3, category: "Community", title: "Community Gathering", image: "/images/gallery/community-gathering.jpeg", alt: "People gathered for a discussion beneath the Swabhiman Foundation sign", description: "A community discussion at Swabhiman Jan Evam Pashu Kalyan Foundation." },
-  { id: 4, category: "Community", title: "S k Bhardwaj", image: "/images/gallery/s-k-bhardwaj.jpeg", alt: "Portrait of S k Bhardwaj", description: "S k Bhardwaj, Executive Member of Swabhiman Jan Evam Pashu Kalyan Foundation." },
   { id: 5, category: "Education", title: "Learning & Discussion", image: "/images/gallery/learning-discussion.jpeg", alt: "Participants seated in a training room during a presentation", description: "Participants coming together for a presentation and discussion." },
 ] as const;
 

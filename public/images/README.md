@@ -9,7 +9,6 @@ The gallery uses owner-supplied photographs from `Images/Gallery`, with exact du
 | gallery/cattle-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.22 PM.jpeg | Gallery cattle care card |
 | gallery/veterinary-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.23 PM.jpeg | Gallery veterinary care card |
 | gallery/community-gathering.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (1).jpeg | Gallery community card and hero |
-| gallery/s-k-bhardwaj.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (2).jpeg | Gallery S k Bhardwaj portrait |
 | gallery/learning-discussion.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM.jpeg | Gallery learning card |
 | team/s-k-bhardwaj.jpeg | S k Bhardwaj.jpeg | About page Executive Member portrait |
 | team/naresh-ji-maharaj.jpeg | NARESH JI MAHARAJ.jpeg | About page Spokesperson portrait |
