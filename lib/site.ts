@@ -31,7 +31,7 @@ export const organization = {
     "Uttar Pradesh – 203155, India",
   ],
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "swabhimanfoundation2026@gmail.com",
-  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim() || "+91 97617 73131",
+  phone: process.env.NEXT_PUBLIC_CONTACT_PHONE?.trim() || "+91 9528547505",
 } as const;
 
 export const navLinks = [

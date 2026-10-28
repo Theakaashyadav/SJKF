@@ -31,7 +31,7 @@ Do not add a start command or `PORT`. Add the public settings from `.env.example
 Set these public build-time variables in the hosting project:
 
 - `NEXT_PUBLIC_SITE_URL`: canonical custom-domain origin, for example `https://example.org`; when omitted on Render, the build uses `RENDER_EXTERNAL_URL`
-- `NEXT_PUBLIC_CONTACT_EMAIL` and `NEXT_PUBLIC_CONTACT_PHONE`: optional overrides for the published contact details, `swabhimanfoundation2026@gmail.com` and `+91 97617 73131`
+- `NEXT_PUBLIC_CONTACT_EMAIL` and `NEXT_PUBLIC_CONTACT_PHONE`: optional overrides for the published contact details, `swabhimanfoundation2026@gmail.com` and `+91 9528547505`
 - `NEXT_PUBLIC_CONTACT_FORM_ENDPOINT`: HTTPS endpoint from a secure static-form provider such as Formspree or Basin
 - `NEXT_PUBLIC_RAZORPAY_PAYMENT_BUTTON_ID`: public `pl_...` ID of a live Razorpay Donations Payment Button
 
@@ -72,11 +72,11 @@ Next.js App Router generates trailing-slash static routes. Render serves the exp
 
 ## Content and image integrity
 
-Organization facts were cross-checked against the supplied MCA and DARPAN records. The draft ISO document is not used as a public certification claim. The site makes no 80G claim.
+Organization facts were cross-checked against the supplied MCA and DARPAN records. The supplied 149Q ISO 9001 PDF is available in the document library; the earlier draft ISO document is not published. The site makes no 80G claim.
 
-The Documents page previews registration and governance PDFs stored in `public/documents/`. Its titles, descriptions and file sizes are listed in `lib/documents.ts`. To add or replace a document, update the PDF and its corresponding entry, then rebuild the static site. Drafts, tax cards and individual DIN letters are not included in the public library.
+The Documents page previews the ISO 9001 document, registration and governance PDFs stored in `public/documents/`. Its titles, descriptions and file sizes are listed in `lib/documents.ts`. To add or replace a document, update the PDF and its corresponding entry, then rebuild the static site. Drafts, tax cards and individual DIN letters are not included in the public library.
 
-Development photographs are licensed Pexels stock images. The gallery labels them as placeholders and never presents them as completed foundation work. Provenance is recorded in `public/images/README.md`; replace them with consented, verified project media as it becomes available.
+The gallery uses five unique photographs supplied in `Images/Gallery`; duplicate copies are displayed only once. Gallery captions describe the visible content without inferring event dates or locations. Other illustrative photographs are licensed Pexels stock images. Provenance is recorded in `public/images/README.md`.
 
 ## Verification
 

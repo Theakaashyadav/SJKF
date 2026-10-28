@@ -10,15 +10,16 @@ import { buildPageMetadata } from "@/lib/metadata";
 export const metadata: Metadata = buildPageMetadata("About Us | Swabhiman Jan Evam Pashu Kalyan Foundation", "Learn about Swabhiman Foundation's purpose, story, leadership and verified registration details.", "/about");
 
 const members = [
+  { name: "Naresh Kumar Sharma", designation: "Patron (संरक्षक)", image: "naresh-kumar-sharma.jpeg" },
   { name: "Sonu Sharma", designation: "Founder & President", image: "sonu-sharma.jpeg" },
   { name: "Kamal Sharma", designation: "Vice President", image: "kamal-sharma.jpeg" },
   { name: "Kulbhan Singh", designation: "Vice President", image: "kulbhan-singh.jpeg" },
   { name: "Sagar Bhardwaj", designation: "Secretary", image: "sagar-bhardwaj.jpeg" },
-  { name: "Shivkumar Sharma", designation: "Executive Member", image: "shivkumar-sharma.jpeg" },
+  { name: "S k Bhardwaj", designation: "Executive Member", image: "s-k-bhardwaj.jpeg" },
   { name: "Santosh Yadav", designation: "Executive Member", image: "santosh-yadav.jpeg" },
   { name: "Neera Sharma", designation: "Joint Secretary", image: "neera-sharma.jpeg" },
   { name: "Ramakant", designation: null, image: "ramakant.jpeg" },
-  { name: "Naresh Kumar Sharma", designation: "Patron", image: "naresh-kumar-sharma.jpeg" },
+  { name: "NARESH JI MAHARAJ", designation: "Spokesperson", image: "naresh-ji-maharaj.jpeg" },
 ];
 
 export default function AboutPage() {
@@ -84,7 +85,7 @@ export default function AboutPage() {
             <article><ShieldCheck /><span>DARPAN ID</span><strong>{organization.darpanId}</strong></article>
             <article><BadgeCheck /><span>Date of incorporation</span><strong>{organization.incorporationDate}</strong></article>
           </div>
-          <div className="verification-note"><strong>Important:</strong> The foundation does not currently publish an ISO certification or 80G tax-exemption claim on this website unless and until a final, valid approval is independently verified.</div>
+          <div className="verification-note">View our registration records, governance documents and ISO 9001 document in the <Link href="/documents">document library</Link>.</div>
         </div>
       </section>
 

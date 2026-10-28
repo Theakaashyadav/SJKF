@@ -1,18 +1,17 @@
 "use client";
 
 import Image from "next/image";
-import { Calendar, Expand, MapPin, X } from "lucide-react";
+import { Expand, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-const filters = ["All", "Animal Welfare", "Education", "Healthcare", "Environment", "Community"] as const;
+const filters = ["All", "Animal Welfare", "Education", "Community"] as const;
 
 const items = [
-  { id: 1, category: "Animal Welfare", title: "Animal Welfare Media Placeholder", image: "/images/stock/gallery-animal-shelter.jpg", alt: "A white and brown dog looking out from an animal shelter", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of rescue, feeding, veterinary care or animal protection initiatives." },
-  { id: 2, category: "Community", title: "Community Development Media Placeholder", image: "/images/stock/gallery-community.jpg", alt: "A volunteer handing over a box of groceries for community support", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified community development, livelihood or outreach documentation." },
-  { id: 3, category: "Education", title: "Education Media Placeholder", image: "/images/stock/gallery-education.jpg", alt: "Children sitting at desks during a lesson in an Indian classroom", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of education, learning-material or literacy initiatives." },
-  { id: 4, category: "Healthcare", title: "Healthcare Media Placeholder", image: "/images/stock/gallery-healthcare.jpg", alt: "A doctor reviewing notes during a consultation with a patient", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified documentation from a medical camp, awareness activity or healthcare partnership." },
-  { id: 5, category: "Environment", title: "Environment Media Placeholder", image: "/images/stock/gallery-environment.jpg", alt: "Two volunteers picking up litter with gloves and collection bags", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs of plantation, cleanliness or environmental awareness initiatives." },
-  { id: 6, category: "Animal Welfare", title: "Rescue & Care Media Placeholder", image: "/images/stock/gallery-veterinary-care.jpg", alt: "A veterinarian and a volunteer examining a dog in a clinic", location: "Representative stock photograph", date: "Project date awaiting verification", description: "Reserved for verified photographs and context from an animal care or rehabilitation activity." },
+  { id: 1, category: "Animal Welfare", title: "Cattle Care at the Shelter", image: "/images/gallery/cattle-care.jpeg", alt: "People assisting with care for a cow inside a cattle shelter", description: "A moment of hands-on animal care at a cattle shelter, shared in the foundation's gallery." },
+  { id: 2, category: "Animal Welfare", title: "Veterinary Care for Cattle", image: "/images/gallery/veterinary-care.jpeg", alt: "A group helping with the treatment of a cow at a cattle shelter", description: "People working together to support the treatment and care of cattle." },
+  { id: 3, category: "Community", title: "Community Gathering", image: "/images/gallery/community-gathering.jpeg", alt: "People gathered for a discussion beneath the Swabhiman Foundation sign", description: "A community discussion at Swabhiman Jan Evam Pashu Kalyan Foundation." },
+  { id: 4, category: "Community", title: "S k Bhardwaj", image: "/images/gallery/s-k-bhardwaj.jpeg", alt: "Portrait of S k Bhardwaj", description: "S k Bhardwaj, Executive Member of Swabhiman Jan Evam Pashu Kalyan Foundation." },
+  { id: 5, category: "Education", title: "Learning & Discussion", image: "/images/gallery/learning-discussion.jpeg", alt: "Participants seated in a training room during a presentation", description: "Participants coming together for a presentation and discussion." },
 ] as const;
 
 export function GalleryGrid() {
@@ -46,7 +45,6 @@ export function GalleryGrid() {
           <button type="button" className={`gallery-card gallery-card--${(index % 3) + 1}`} key={item.id} onClick={() => setSelected(item)} aria-label={`Open ${item.title}`}>
             <Image src={item.image} alt={item.alt} fill sizes="(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw" />
             <span className="gallery-card__tag">{item.category}</span>
-            <span className="gallery-card__placeholder">Development placeholder</span>
             <span className="gallery-card__content"><strong>{item.title}</strong><span>View details <Expand /></span></span>
           </button>
         ))}
@@ -61,8 +59,6 @@ export function GalleryGrid() {
               <span className="gallery-card__tag">{selected.category}</span>
               <h2 id="lightbox-title">{selected.title}</h2>
               <p>{selected.description}</p>
-              <div className="lightbox__meta"><span><MapPin />{selected.location}</span><span><Calendar />{selected.date}</span></div>
-              <div className="disclosure-box"><strong>Transparency note:</strong> This licensed stock photograph is a visual placeholder and is not presented as a Swabhiman Foundation activity. It will be replaced only with verified, consented project media.</div>
             </div>
           </div>
         </div>

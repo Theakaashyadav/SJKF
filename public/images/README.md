@@ -1,8 +1,18 @@
 # Image asset register
 
-The photographs listed below are available under the [Pexels License](https://www.pexels.com/license/). They illustrate the foundation's intended areas of work and must not be presented as records of completed Swabhiman Foundation projects.
+The stock photographs listed below are available under the [Pexels License](https://www.pexels.com/license/). They illustrate the foundation's intended areas of work and must not be presented as records of completed Swabhiman Foundation projects.
 
-Every content placement has its own photograph. Gallery thumbnails and their enlarged view intentionally show the same selected photograph. The foundation logo and donation QR code remain consistent wherever required.
+The gallery uses owner-supplied photographs from `Images/Gallery`, with exact duplicate files shown only once. Its thumbnails and enlarged views show the same selected photograph; the community gathering photo also appears in the gallery hero. Dates and locations are not inferred from WhatsApp filenames. The foundation logo and donation QR code remain consistent wherever required.
+
+| Supplied asset | Original file in `Images/` | Placement |
+| --- | --- | --- |
+| gallery/cattle-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.22 PM.jpeg | Gallery cattle care card |
+| gallery/veterinary-care.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.23 PM.jpeg | Gallery veterinary care card |
+| gallery/community-gathering.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (1).jpeg | Gallery community card and hero |
+| gallery/s-k-bhardwaj.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM (2).jpeg | Gallery S k Bhardwaj portrait |
+| gallery/learning-discussion.jpeg | Gallery/WhatsApp Image 2026-10-26 at 5.51.24 PM.jpeg | Gallery learning card |
+| team/s-k-bhardwaj.jpeg | S k Bhardwaj.jpeg | About page Executive Member portrait |
+| team/naresh-ji-maharaj.jpeg | NARESH JI MAHARAJ.jpeg | About page Spokesperson portrait |
 
 | File | Photographer | Source | Placement |
 | --- | --- | --- | --- |
@@ -26,13 +36,6 @@ Every content placement has its own photograph. Gallery thumbnails and their enl
 | stock/work-youth.jpg | Kiran Pokuri Photography | https://www.pexels.com/photo/indian-students-doing-homework-in-campus-meadow-4622108/ | Our Work youth development section |
 | stock/work-community.jpg | Kuldip vadadoriya | https://www.pexels.com/photo/rural-village-scene-in-kashmir-india-31756853/ | Our Work community welfare section |
 | stock/work-relief.jpg | RDNE Stock project | https://www.pexels.com/photo/food-love-africa-travel-6647119/ | Our Work disaster relief section |
-| stock/gallery-storytelling.jpg | Harry Shelton | https://www.pexels.com/photo/hands-holding-a-digital-camera-7239945/ | Gallery page hero |
-| stock/gallery-animal-shelter.jpg | Ron Martinez | https://www.pexels.com/photo/white-and-brown-short-coated-dog-4044201/ | Gallery animal welfare card |
-| stock/gallery-community.jpg | cottonbro studio | https://www.pexels.com/photo/vegetables-cabbage-faceless-fruits-6590933/ | Gallery community card |
-| stock/gallery-education.jpg | Swastik Arora | https://www.pexels.com/photo/two-children-sitting-at-desks-in-a-classroom-18012457/ | Gallery education card |
-| stock/gallery-healthcare.jpg | Antoni Shkraba | https://www.pexels.com/photo/a-patient-having-a-consultation-with-her-doctor-5214997/ | Gallery healthcare card |
-| stock/gallery-environment.jpg | Thirdman | https://www.pexels.com/photo/volunteer-people-picking-up-trash-and-plastics-7656742/ | Gallery environment card |
-| stock/gallery-veterinary-care.jpg | Mikhail Nilov | https://www.pexels.com/photo/dog-getting-checked-7469216/ | Gallery rescue and care card |
 | stock/documents-records.jpg | Pavel Danilyuk | https://www.pexels.com/photo/people-doing-paperwork-at-a-desk-8152735/ | Documents page hero |
 | stock/donate-support.jpg | RDNE Stock project | https://www.pexels.com/photo/people-handing-over-a-brown-box-6646903/ | Donate page hero |
 | stock/contact-conversation.jpg | Thirdman | https://www.pexels.com/photo/group-of-people-in-a-meeting-5256693/ | Contact page hero |

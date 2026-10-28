@@ -5,7 +5,7 @@ import { buildPageMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = buildPageMetadata(
   "Documents | Swabhiman Foundation",
-  "View and download Swabhiman Foundation's registration documents, Section 8 licence and governance records.",
+  "View and download Swabhiman Foundation's ISO 9001 document, registration documents, Section 8 licence and governance records.",
   "/documents",
 );
 
@@ -16,7 +16,7 @@ export default function DocumentsPage() {
         eyebrow="Transparency & trust"
         title="Our Documents"
         image="/images/stock/documents-records.jpg"
-        description="Explore our registration and governance records. Select a PDF to view it here, open it in a new tab or download a copy."
+        description="Explore our ISO 9001 document, registration and governance records. Select a PDF to view it here, open it in a new tab or download a copy."
       />
       <section className="section section--soft documents-section" aria-label="Foundation documents">
         <div className="container">

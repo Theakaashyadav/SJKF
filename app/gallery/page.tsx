@@ -1,22 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Camera, ShieldCheck } from "lucide-react";
+import { Camera } from "lucide-react";
 import { GalleryGrid } from "@/components/GalleryGrid";
 import { PageHero } from "@/components/PageHero";
 import { SectionHeading } from "@/components/SectionHeading";
 import { buildPageMetadata } from "@/lib/metadata";
 
-export const metadata: Metadata = buildPageMetadata("Gallery & Impact | Swabhiman Foundation", "A transparent gallery framework for verified stories, project photographs and community impact documentation from Swabhiman Foundation.", "/gallery");
+export const metadata: Metadata = buildPageMetadata("Gallery & Impact | Swabhiman Foundation", "Explore photographs of animal care, community gatherings and shared moments from Swabhiman Foundation's gallery.", "/gallery");
 
 export default function GalleryPage() {
   return (
     <>
-      <PageHero eyebrow="Gallery & impact" title="Stories of Compassion & Change" description="A home for verified project moments, community stories and responsible impact documentation." image="/images/stock/gallery-storytelling.jpg" />
+      <PageHero eyebrow="Gallery & impact" title="Stories of Compassion & Change" description="Animal care, community gatherings and shared moments from our photo collection." image="/images/gallery/community-gathering.jpeg" />
       <section className="section">
         <div className="container">
           <div className="gallery-intro">
-            <SectionHeading eyebrow="Impact, documented responsibly" title="A Gallery Built for Genuine Stories" description="Until verified photographs and project information are supplied, every development image is clearly marked as representative stock photography." />
-            <div className="gallery-trust"><ShieldCheck /><p><strong>No invented project claims.</strong><span>Each future entry supports a title, location, date and short description.</span></p></div>
+            <SectionHeading eyebrow="Our photo gallery" title="Moments of Care & Community" description="Browse our photographs of cattle care, community conversations and learning. Select any photo to see it in full." />
+            <div className="gallery-trust"><Camera /><p><strong>From our photo collection</strong><span>Explore the gallery by category or open a photo for a closer look.</span></p></div>
           </div>
           <GalleryGrid />
         </div>
