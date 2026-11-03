@@ -51,6 +51,8 @@ Hindi copy is maintained in `lib/translations-common.ts`, `lib/translations-page
 
 Deploy two services from `Theakaashyadav/SJKF`, branch `main`. The repository's `render.yaml` Blueprint defines both services; [Deploy to Render](https://render.com/deploy?repo=https://github.com/Theakaashyadav/SJKF) can read that configuration.
 
+The Blueprint connects the Static Site's `NEXT_PUBLIC_RAZORPAY_API_URL` to the payment service's public Render URL automatically and approves the foundation's custom domain and `sjkf.onrender.com` origin for CORS. It prompts only for the API service's private Razorpay credentials. Sync the Blueprint to apply these environment settings; pushing a commit to a manually created service does not apply `render.yaml`. Render documents [service environment references](https://render.com/docs/blueprint-spec#referencing-service-properties).
+
 ### Existing website: Static Site
 
 Keep the website as the existing Render **Static Site**:
@@ -80,6 +82,12 @@ Set `PAYMENT_ALLOWED_ORIGINS` to the exact public origins of the static website,
 Once the API is deployed, copy its actual origin into `NEXT_PUBLIC_RAZORPAY_API_URL` in the **Static Site's Environment**, then rebuild/redeploy the static site. Public website settings are embedded at build time. An API URL and configured backend are required before online Razorpay checkout becomes available; UPI and bank details remain available during setup.
 
 The API Key ID and Secret belong only in the payment API service's private Environment. Remove old payment secrets and hosted-page/button settings from the Static Site environment. The root `.env.local` is for public website configuration; it does not configure the separately hosted API.
+
+### Checkout stays unavailable after saving credentials
+
+The deployed website must contain a public payment API URL before it can check the credentials. On a manually configured Static Site, add `NEXT_PUBLIC_RAZORPAY_API_URL` with the actual payment Web Service URL, then choose **Save, rebuild, and deploy**. Saving credentials on the Static Site alone cannot configure the separate API. In the payment Web Service, use the exact names `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET`, and set `PAYMENT_ALLOWED_ORIGINS` to `https://www.swabhimankalyanfoundation.org` (plus other origins visitors use). Save and deploy the API's settings.
+
+Verify the API's `/health` endpoint returns `200` and `/api/payments/config/` reports `configured: true`; the configuration response contains only the public Key ID. The website must be able to fetch that endpoint with its origin accepted by CORS. Use the donation form's availability retry if a sleeping API is still starting. No payment order is created by an availability check. Environment save/rebuild behavior is described in [Render's environment documentation](https://render.com/docs/configure-environment-variables).
 
 ## Public build settings
 

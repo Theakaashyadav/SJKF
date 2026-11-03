@@ -10,7 +10,10 @@ services:
       - key: NODE_VERSION
         value: "22.x"
       - key: NEXT_PUBLIC_RAZORPAY_API_URL
-        sync: false
+        fromService:
+          type: web
+          name: sjkf-payments
+          envVarKey: PAYMENT_PUBLIC_URL
     headers:
       - path: /*
         name: X-Content-Type-Options
@@ -49,4 +52,9 @@ services:
       - key: RAZORPAY_KEY_SECRET
         sync: false
       - key: PAYMENT_ALLOWED_ORIGINS
-        sync: false
+        value: https://www.swabhimankalyanfoundation.org,https://swabhimankalyanfoundation.org,https://sjkf.onrender.com
+      - key: PAYMENT_PUBLIC_URL
+        fromService:
+          type: web
+          name: sjkf-payments
+          envVarKey: RENDER_EXTERNAL_URL

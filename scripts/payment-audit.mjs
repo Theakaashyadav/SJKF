@@ -43,12 +43,15 @@ async function scenario(mode, run) {
   const orders = [];
   const verifications = [];
   let scriptLoads = 0;
+  let configRequests = 0;
+  let releaseConfigRetry;
+  const configRetryResponse = new Promise((resolve) => { releaseConfigRetry = resolve; });
   page.on("pageerror", (error) => pageErrors.push({ mode, message: error.message }));
   page.on("console", (message) => {
     if (message.type() !== "error") return;
     const url = message.location().url || "";
     // HTTP failure and script retry scenarios intentionally create these failures.
-    if (["rejected", "order-error"].includes(mode) && url.includes("/api/payments/")) return;
+    if (["rejected", "order-error", "config-retry"].includes(mode) && url.includes("/api/payments/")) return;
     if (mode === "script-retry" && url.includes("checkout.razorpay.com")) return;
     consoleErrors.push({ mode, message: message.text(), url });
   });
@@ -71,7 +74,13 @@ async function scenario(mode, run) {
     const corsHeaders = { "Access-Control-Allow-Origin": siteOrigin, "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", Vary: "Origin" };
     if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: corsHeaders });
     const reply = (data, status = 200) => route.fulfill({ status, contentType: "application/json", headers: corsHeaders, body: JSON.stringify(data) });
-    if (pathname.endsWith("/config")) return reply({ configured: mode !== "unconfigured", ...(mode !== "unconfigured" ? { keyId: fakeKeyId } : {}) });
+    if (pathname.endsWith("/config")) {
+      assert.equal(route.request().method(), "GET", "Availability checks must use GET only");
+      configRequests++;
+      if (mode === "config-retry" && configRequests === 1) return reply({ error: "Payment service waking up" }, 503);
+      if (mode === "config-retry" && configRequests === 2) await configRetryResponse;
+      return reply({ configured: mode !== "unconfigured", ...(mode !== "unconfigured" ? { keyId: fakeKeyId } : {}) });
+    }
     const body = route.request().postDataJSON();
     if (pathname.endsWith("/order")) {
       orders.push(body);
@@ -93,10 +102,11 @@ async function scenario(mode, run) {
     await page.locator(".donation-checkout, .static-donation-fallback").first().waitFor();
     assert.deepEqual(sameOriginRequests, [], "Static website must never call same-origin payment API routes");
     const available = await page.locator(".donation-checkout").count() === 1;
-    if (mode !== "probe") assert.equal(available, mode !== "unconfigured", "Checkout availability follows separate API configuration");
-    await run({ page, orders, verifications, available, scriptLoads: () => scriptLoads });
+    if (mode !== "probe") assert.equal(available, !["unconfigured", "config-retry"].includes(mode), "Checkout availability follows separate API configuration");
+    await run({ page, orders, verifications, available, scriptLoads: () => scriptLoads, configRequests: () => configRequests, releaseConfigRetry });
     return available;
   } finally {
+    releaseConfigRetry();
     await context.close();
   }
 }
@@ -107,6 +117,7 @@ try {
       assert.equal(orders.length, 0);
       assert.equal(scriptLoads(), 0);
       assert.equal(await page.locator('.static-donation-fallback a[href="#direct-donation"]').count(), 1);
+      assert.equal(await page.getByRole("button", { name: "Try again", exact: true }).count(), 0);
     }
   });
   if (requireConfigured) assert.equal(configured, true, "Build with NEXT_PUBLIC_RAZORPAY_API_URL to exercise configured checkout scenarios");
@@ -209,10 +220,33 @@ try {
 
   await scenario("unconfigured", async ({ page, orders, scriptLoads }) => {
     assert.equal(await page.locator(".donation-checkout").count(), 0);
+    await page.getByText("Razorpay checkout is being configured. You can donate using the UPI QR code or bank details above.", { exact: true }).waitFor();
+    assert.equal(await page.getByRole("button", { name: "Try again", exact: true }).count(), 1);
     assert.equal(await page.locator('.static-donation-fallback a[href="#direct-donation"]').count(), 1);
     assert.equal(orders.length, 0);
     assert.equal(scriptLoads(), 0);
     checks.push("Missing server credentials preserve UPI and bank donation fallback");
+  });
+
+  await scenario("config-retry", async ({ page, orders, scriptLoads, configRequests, releaseConfigRetry }) => {
+    await page.getByText("Online payment is temporarily unavailable. Please try again or use UPI/bank transfer.", { exact: true }).waitFor();
+    assert.equal(configRequests(), 1);
+    assert.equal(orders.length, 0);
+    assert.equal(scriptLoads(), 0);
+    await page.getByRole("button", { name: "Try again", exact: true }).click();
+    await page.getByText("Checking payment availability…", { exact: true }).waitFor();
+    assert.equal(await page.locator(".donation-checkout").count(), 0);
+    assert.equal(orders.length, 0);
+    assert.equal(scriptLoads(), 0);
+    releaseConfigRetry();
+    await page.locator(".donation-checkout").waitFor();
+    assert.equal(configRequests(), 2);
+    assert.equal(orders.length, 0);
+    assert.equal(scriptLoads(), 0);
+    await page.locator(".donation-checkout").click();
+    await page.locator(".payment-confirmation").waitFor();
+    assert.equal(orders.length, 1);
+    checks.push("A temporary availability failure recovers through a GET retry; checkout creates an order only after Donate is clicked");
   });
   } else {
     checks.push("Missing or invalid public API base shows UPI fallback without calling payment APIs or loading checkout");

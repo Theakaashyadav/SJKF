@@ -22,6 +22,7 @@ type RazorpayConstructor = new (options: CheckoutOptions) => Checkout;
 type Order = { keyId: string; orderId: string; amount: number; currency: "INR"; orderToken: string };
 type Verification = { orderId: string; paymentId: string; signature: string; orderToken: string };
 type Flow = "idle" | "preparing" | "checkout" | "verifying" | "cancelled" | "failed" | "pending" | "unconfirmed" | "success";
+type Availability = "checking" | "missing" | "unconfigured" | "unavailable" | "ready";
 
 declare global { interface Window { Razorpay?: RazorpayConstructor } }
 
@@ -71,7 +72,9 @@ export function DonationForm() {
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(1000);
   const [customAmount, setCustomAmount] = useState("");
   const paymentApi = process.env.NEXT_PUBLIC_RAZORPAY_API_URL?.trim() || "";
-  const [configured, setConfigured] = useState<boolean | null>(null);
+  const configEndpoint = paymentApiEndpoint(paymentApi, "config");
+  const [availability, setAvailability] = useState<Availability>("checking");
+  const [availabilityAttempt, setAvailabilityAttempt] = useState(0);
   const [flow, setFlow] = useState<Flow>("idle");
   const [paymentReference, setPaymentReference] = useState("");
   const [verifiedAmount, setVerifiedAmount] = useState(0);
@@ -83,21 +86,35 @@ export function DonationForm() {
   const busy = ["preparing", "checkout", "verifying"].includes(flow);
   const awaitingConfirmation = flow === "pending" || flow === "unconfirmed";
   const locked = busy || awaitingConfirmation || flow === "success";
+  const configured = availability === "ready";
 
   useEffect(() => {
     mounted.current = true;
-    const endpoint = paymentApiEndpoint(paymentApi, "config");
-    if (!endpoint) {
-      setConfigured(false);
-      return () => { mounted.current = false; };
+    return () => { mounted.current = false; };
+  }, []);
+
+  useEffect(() => {
+    if (!configEndpoint) {
+      setAvailability("missing");
+      return;
     }
+    const endpoint = configEndpoint;
     const controller = new AbortController();
-    fetch(endpoint, { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(60000)]) })
-      .then((response) => response.ok ? response.json() : null)
-      .then((data) => { if (mounted.current) setConfigured(data?.configured === true); })
-      .catch(() => { if (mounted.current && !controller.signal.aborted) setConfigured(false); });
-    return () => { mounted.current = false; controller.abort(); };
-  }, [paymentApi]);
+    setAvailability("checking");
+    async function checkAvailability() {
+      try {
+        const response = await fetch(endpoint, { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(60000)]) });
+        if (!response.ok) throw new Error("Payment availability check failed");
+        const data = await response.json();
+        if (!data || typeof data !== "object" || typeof data.configured !== "boolean") throw new Error("Invalid payment availability response");
+        if (!controller.signal.aborted) setAvailability(data.configured ? "ready" : "unconfigured");
+      } catch {
+        if (!controller.signal.aborted) setAvailability("unavailable");
+      }
+    }
+    void checkAvailability();
+    return () => { controller.abort(); };
+  }, [configEndpoint, availabilityAttempt]);
 
   async function verifyPayment(details: Verification) {
     if (!mounted.current) return;
@@ -184,8 +201,8 @@ export function DonationForm() {
 
       <div className="form-section">
         <div className="form-section__heading"><span>2</span><div><h2>{t("Complete secure checkout")}</h2><p>{t("Enter your donor and payment details in Razorpay's secure checkout.")}</p></div></div>
-        {configured === null ? <p className="payment-widget-status" role="status">{t("Checking payment availability…")}</p> : null}
-        {configured === false ? <div className="static-donation-fallback"><div className="form-feedback form-feedback--info" role="status">{t("Razorpay checkout is being configured. You can donate using the UPI QR code or bank details above.")}</div><a className="button button--green button--large" href="#direct-donation">{t("View UPI & bank details")}</a></div> : null}
+        {availability === "checking" ? <p className="payment-widget-status" role="status">{t("Checking payment availability…")}</p> : null}
+        {availability === "missing" || availability === "unconfigured" || availability === "unavailable" ? <div className="static-donation-fallback"><div className="form-feedback form-feedback--info" role="status">{t(availability === "unavailable" ? "Online payment is temporarily unavailable. Please try again or use UPI/bank transfer." : availability === "missing" ? "Online payment is not available yet. You can donate using the UPI QR code or bank details above." : "Razorpay checkout is being configured. You can donate using the UPI QR code or bank details above.")}</div>{configEndpoint ? <p><button className="button button--gold" type="button" onClick={() => setAvailabilityAttempt((attempt) => attempt + 1)}>{t("Try again")}</button></p> : null}<a className="button button--green button--large" href="#direct-donation">{t("View UPI & bank details")}</a></div> : null}
         {configured && selectedAmount === "custom" && !amountIsValid ? <div className="form-feedback form-feedback--error" role="status">{t("Enter a whole amount between ₹100 and ₹5,00,000 to continue.")}</div> : null}
         {statusMessage ? <div className={`form-feedback form-feedback--${flow === "failed" || flow === "unconfirmed" ? "error" : "info"}`} role="status">{busy ? <LoaderCircle className="spin" aria-hidden="true" /> : null}{t(statusMessage)}</div> : null}
         {flow === "success" ? <div className="form-feedback form-feedback--success payment-confirmation" role="status"><CheckCircle2 aria-hidden="true" /><div><strong>{t("Payment confirmed. Thank you for your support.")}</strong><p>₹{(verifiedAmount / 100).toLocaleString("en-IN")}</p></div></div> : null}
