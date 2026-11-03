@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, CreditCard, LoaderCircle, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { causeOptions, organization } from "@/lib/site";
+import { paymentApiEndpoint, type PaymentApiAction } from "@/lib/payments/api-url";
 
 const amounts = [500, 1000, 2500, 5000, 10000];
 type CheckoutResponse = { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string };
@@ -50,10 +51,12 @@ function loadCheckout() {
   return checkoutLoader;
 }
 
-async function postPayment(path: string, body: object) {
-  const response = await fetch(path, {
+async function postPayment(base: string, action: PaymentApiAction, body: object) {
+  const endpoint = paymentApiEndpoint(base, action);
+  if (!endpoint) throw new Error("Payment service is not configured");
+  const response = await fetch(endpoint, {
     method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    cache: "no-store", signal: AbortSignal.timeout(20000),
+    cache: "no-store", signal: AbortSignal.timeout(60000),
   });
   const data = await response.json();
   if (!response.ok || !data || typeof data !== "object") throw new Error("Payment request unavailable");
@@ -67,6 +70,7 @@ export function DonationForm() {
   const [cause, setCause] = useState<string>(() => causeOptions.find((option) => option === requestedCause) || "General Donation");
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(1000);
   const [customAmount, setCustomAmount] = useState("");
+  const paymentApi = process.env.NEXT_PUBLIC_RAZORPAY_API_URL?.trim() || "";
   const [configured, setConfigured] = useState<boolean | null>(null);
   const [flow, setFlow] = useState<Flow>("idle");
   const [paymentReference, setPaymentReference] = useState("");
@@ -82,20 +86,25 @@ export function DonationForm() {
 
   useEffect(() => {
     mounted.current = true;
+    const endpoint = paymentApiEndpoint(paymentApi, "config");
+    if (!endpoint) {
+      setConfigured(false);
+      return () => { mounted.current = false; };
+    }
     const controller = new AbortController();
-    fetch("/api/payments/config/", { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(10000)]) })
+    fetch(endpoint, { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(60000)]) })
       .then((response) => response.ok ? response.json() : null)
       .then((data) => { if (mounted.current) setConfigured(data?.configured === true); })
       .catch(() => { if (mounted.current && !controller.signal.aborted) setConfigured(false); });
     return () => { mounted.current = false; controller.abort(); };
-  }, []);
+  }, [paymentApi]);
 
   async function verifyPayment(details: Verification) {
     if (!mounted.current) return;
     setFlow("verifying");
     busyRef.current = true;
     try {
-      const result = await postPayment("/api/payments/verify/", details);
+      const result = await postPayment(paymentApi, "verify", details);
       if (!mounted.current) return;
       if (result.verified === true && result.status === "captured" && result.orderId === details.orderId && result.paymentId === details.paymentId && result.currency === "INR" && result.amount === amount * 100) {
         setVerifiedAmount(result.amount);
@@ -120,7 +129,7 @@ export function DonationForm() {
     verification.current = null;
     try {
       const Razorpay = await loadCheckout();
-      const order: Order = await postPayment("/api/payments/order/", { amount, cause });
+      const order: Order = await postPayment(paymentApi, "order", { amount, cause });
       if (!mounted.current) { busyRef.current = false; return; }
       if (!/^rzp_(?:test|live)_[A-Za-z0-9]+$/.test(order.keyId) || !/^order_[A-Za-z0-9]+$/.test(order.orderId) || order.amount !== amount * 100 || order.currency !== "INR" || typeof order.orderToken !== "string" || !order.orderToken) throw new Error("Invalid checkout order");
       let callbackReceived = false;

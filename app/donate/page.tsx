@@ -30,7 +30,7 @@ export default function DonatePage() {
             </div>
             <div className="security-card">
               <h3><LockKeyhole /><T>{" Payment security"}</T></h3>
-              <p><T>{"Razorpay donations are confirmed only after the payment is verified and captured. Direct UPI and bank transfers require reconciliation by the foundation."}</T></p>
+              <p><T>{"Razorpay donations are confirmed only after the payment service verifies a captured payment. Direct UPI and bank transfers require reconciliation by the foundation."}</T></p>
               <div><ShieldCheck /><span><T>{"Confirm the foundation's beneficiary name before completing your payment."}</T></span></div>
               <div><ReceiptText /><span><T>{"Keep your transaction reference when requesting an acknowledgement."}</T></span></div>
             </div>

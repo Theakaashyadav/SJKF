@@ -1,8 +1,11 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { chromium } from "playwright-core";
 
 // Every payment endpoint and checkout script is mocked. This audit never charges money.
 const baseURL = process.env.AUDIT_BASE_URL || "http://127.0.0.1:3000";
+const siteOrigin = new URL(baseURL).origin;
+const expectedApiOrigin = process.env.AUDIT_API_BASE_URL ? new URL(process.env.AUDIT_API_BASE_URL).origin : null;
+const requireConfigured = process.env.AUDIT_REQUIRE_CONFIGURED === "1";
 const browser = await chromium.launch({
   executablePath: process.env.AUDIT_BROWSER_PATH || "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
   headless: true,
@@ -10,6 +13,8 @@ const browser = await chromium.launch({
 const checks = [];
 const pageErrors = [];
 const consoleErrors = [];
+const sameOriginRequests = [];
+const apiOrigins = new Set();
 const fakeKeyId = "rzp_test_AuditOnly123";
 const fakeOrderId = "order_AuditOnly123";
 const fakePaymentId = "pay_AuditOnly123";
@@ -54,8 +59,18 @@ async function scenario(mode, run) {
     await route.fulfill({ status: 200, contentType: "application/javascript", body: checkoutMock });
   });
   await page.route("**/api/payments/**", async (route) => {
-    const pathname = new URL(route.request().url()).pathname.replace(/\/+$/, "");
-    const reply = (data, status = 200) => route.fulfill({ status, contentType: "application/json", body: JSON.stringify(data) });
+    const address = new URL(route.request().url());
+    if (address.origin === siteOrigin) {
+      sameOriginRequests.push(address.href);
+      await route.abort("blockedbyclient");
+      return;
+    }
+    apiOrigins.add(address.origin);
+    if (expectedApiOrigin) assert.equal(address.origin, expectedApiOrigin, "All requests must use the configured separate payment service");
+    const pathname = address.pathname.replace(/\/+$/, "");
+    const corsHeaders = { "Access-Control-Allow-Origin": siteOrigin, "Access-Control-Allow-Methods": "GET, POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", Vary: "Origin" };
+    if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: corsHeaders });
+    const reply = (data, status = 200) => route.fulfill({ status, contentType: "application/json", headers: corsHeaders, body: JSON.stringify(data) });
     if (pathname.endsWith("/config")) return reply({ configured: mode !== "unconfigured", ...(mode !== "unconfigured" ? { keyId: fakeKeyId } : {}) });
     const body = route.request().postDataJSON();
     if (pathname.endsWith("/order")) {
@@ -75,15 +90,27 @@ async function scenario(mode, run) {
   try {
     const response = await page.goto(`${baseURL}/donate/?cause=Animal%20Welfare`, { waitUntil: "networkidle", timeout: 60000 });
     assert.equal(response?.status(), 200);
-    if (mode === "unconfigured") await page.locator(".static-donation-fallback").waitFor();
-    else await page.locator(".donation-checkout").waitFor();
-    await run({ page, orders, verifications, scriptLoads: () => scriptLoads });
+    await page.locator(".donation-checkout, .static-donation-fallback").first().waitFor();
+    assert.deepEqual(sameOriginRequests, [], "Static website must never call same-origin payment API routes");
+    const available = await page.locator(".donation-checkout").count() === 1;
+    if (mode !== "probe") assert.equal(available, mode !== "unconfigured", "Checkout availability follows separate API configuration");
+    await run({ page, orders, verifications, available, scriptLoads: () => scriptLoads });
+    return available;
   } finally {
     await context.close();
   }
 }
 
 try {
+  const configured = await scenario("probe", async ({ page, available, orders, scriptLoads }) => {
+    if (!available) {
+      assert.equal(orders.length, 0);
+      assert.equal(scriptLoads(), 0);
+      assert.equal(await page.locator('.static-donation-fallback a[href="#direct-donation"]').count(), 1);
+    }
+  });
+  if (requireConfigured) assert.equal(configured, true, "Build with NEXT_PUBLIC_RAZORPAY_API_URL to exercise configured checkout scenarios");
+  if (configured) {
   await scenario("success", async ({ page, orders, verifications }) => {
     assert.equal(await page.locator('[name="donation-cause"]').inputValue(), "Animal Welfare");
     await page.locator(".amount-grid button").last().click();
@@ -187,12 +214,17 @@ try {
     assert.equal(scriptLoads(), 0);
     checks.push("Missing server credentials preserve UPI and bank donation fallback");
   });
+  } else {
+    checks.push("Missing or invalid public API base shows UPI fallback without calling payment APIs or loading checkout");
+  }
 
+  assert.deepEqual(sameOriginRequests, [], "No same-origin payment API calls from static website");
+  if (configured) assert.equal(apiOrigins.size, 1, "Every payment request uses the same separate service origin");
   assert.deepEqual(pageErrors, [], "No browser runtime errors");
   assert.deepEqual(consoleErrors, [], "No unexpected browser console errors");
-  process.stdout.write(`${JSON.stringify({ passed: true, checks, pageErrors, consoleErrors }, null, 2)}\n`);
+  process.stdout.write(`${JSON.stringify({ passed: true, configured, apiOrigins: [...apiOrigins], checks, sameOriginRequests, pageErrors, consoleErrors }, null, 2)}\n`);
 } catch (error) {
-  process.stderr.write(`${JSON.stringify({ passed: false, checks, error: error instanceof Error ? error.message : String(error), pageErrors, consoleErrors }, null, 2)}\n`);
+  process.stderr.write(`${JSON.stringify({ passed: false, checks, error: error instanceof Error ? error.message : String(error), sameOriginRequests, pageErrors, consoleErrors }, null, 2)}\n`);
   process.exitCode = 1;
 } finally {
   await browser.close();

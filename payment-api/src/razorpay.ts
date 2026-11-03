@@ -1,4 +1,6 @@
-import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+﻿import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+
+import { allowedOrigins } from "./origins.ts";
 
 const causes = new Set(["Animal Welfare", "Education", "Healthcare", "Environmental Initiatives", "Community Welfare", "General Donation"]);
 const apiOrigin = "https://api.razorpay.com/v1";
@@ -7,7 +9,7 @@ const maximumBodyBytes = 4096;
 const noStoreHeaders = { "Cache-Control": "no-store", "X-Content-Type-Options": "nosniff" };
 
 type Environment = Record<string, string | undefined>;
-type Dependencies = { env?: Environment; fetch?: typeof fetch; now?: () => number };
+export type Dependencies = { env?: Environment; fetch?: typeof fetch; now?: () => number };
 type Credentials = { keyId: string; secret: string };
 type Claims = { version: 1; orderId: string; amount: number; currency: "INR"; cause: string; expiresAt: number };
 
@@ -57,30 +59,10 @@ function invalid() {
 
 function verifyOrigin(request: Request, env: Environment) {
   const origin = request.headers.get("origin");
-  const requestUrl = new URL(request.url);
-  const host = request.headers.get("host");
-  const forwardedProtocol = request.headers.get("x-forwarded-proto");
-  const protocol = forwardedProtocol ? `${forwardedProtocol}:` : requestUrl.protocol;
-  const rejected = () => new PaymentError(403, "PAYMENT_ORIGIN_REJECTED", "Open the donation form on this website to continue.");
-  if (protocol !== "http:" && protocol !== "https:") throw rejected();
-  let actualOrigin = requestUrl.origin;
-  if (host !== null) {
-    // Next's internal request URL can use 0.0.0.0. The validated HTTP Host is
-    // the authority the browser visited. Do not use an arbitrary forwarded-host.
-    if (host.length > 255 || !/^(?:[A-Za-z0-9][A-Za-z0-9.-]*|\[[0-9a-fA-F:.]+\])(?::[0-9]{1,5})?$/.test(host)) throw rejected();
-    try {
-      const address = new URL(`${protocol}//${host}`);
-      if (address.username || address.password || address.pathname !== "/" || address.search || address.hash) throw rejected();
-      actualOrigin = address.origin;
-    } catch { throw rejected(); }
-  }
-  const allowed = new Set([actualOrigin]);
-  for (const candidate of [env.NEXT_PUBLIC_SITE_URL, env.RENDER_EXTERNAL_URL]) {
-    if (!candidate) continue;
-    try { allowed.add(new URL(candidate).origin); } catch { /* Ignore an invalid optional website origin. */ }
-  }
-  if (!origin || !allowed.has(origin) || request.headers.get("sec-fetch-site") === "cross-site") {
-    throw rejected();
+  // The browser website is hosted separately. Only explicitly approved static
+  // website origins may create or verify payments, including cross-site fetches.
+  if (!origin || !allowedOrigins(env).has(origin)) {
+    throw new PaymentError(403, "PAYMENT_ORIGIN_REJECTED", "Open the donation form on the approved website to continue.");
   }
 }
 

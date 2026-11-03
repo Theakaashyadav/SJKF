@@ -16,7 +16,7 @@ export default function PaymentSuccessPage() {
           <HeartHandshake />
           <p className="eyebrow"><T>{"Thank you"}</T></p>
           <h1><T>{"Thank You for Your Support"}</T></h1>
-          <p><T>{"A verified Razorpay confirmation appears in the donation form after capture. Keep your payment reference and contact the foundation if you need an acknowledgement."}</T></p>
+          <p><T>{"Verified Razorpay confirmation appears in the donation form after the payment service confirms capture. Keep your payment reference and contact the foundation if you need an acknowledgement."}</T></p>
         </div>
         <div className="transaction-help"><ReceiptText /><span><T>{"Visiting this page does not verify or confirm a payment. Check the verified result in the donation form or contact the foundation with your transaction reference. Direct UPI and bank transfers require manual reconciliation."}</T></span></div>
         <div className="receipt-card__organization"><p><strong><T>{"Registered office:"}</T></strong> <T>{organization.addressLines.join(", ")}</T></p><p><strong><T>{"CIN:"}</T></strong> {organization.cin}</p><p className="tax-note"><T>{"A payment receipt does not automatically represent an 80G tax-exemption certificate."}</T></p></div>

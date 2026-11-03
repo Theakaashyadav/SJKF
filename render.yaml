@@ -1,16 +1,52 @@
 services:
   - type: web
-    name: sjkf-web
-    runtime: node
-    plan: free
+    name: sjkf
+    runtime: static
     branch: main
     buildCommand: npm ci && npm run build
-    startCommand: npm start
+    staticPublishPath: ./out
     autoDeployTrigger: commit
     envVars:
       - key: NODE_VERSION
-        value: 22.18.0
+        value: "22.x"
+      - key: NEXT_PUBLIC_RAZORPAY_API_URL
+        sync: false
+    headers:
+      - path: /*
+        name: X-Content-Type-Options
+        value: nosniff
+      - path: /*
+        name: Referrer-Policy
+        value: strict-origin-when-cross-origin
+      - path: /*
+        name: X-Frame-Options
+        value: SAMEORIGIN
+      - path: /*
+        name: Permissions-Policy
+        value: "camera=(), microphone=(), geolocation=()"
+      - path: /*
+        name: Strict-Transport-Security
+        value: "max-age=63072000; includeSubDomains; preload"
+      - path: /*
+        name: Cross-Origin-Opener-Policy
+        value: same-origin-allow-popups
+
+  - type: web
+    name: sjkf-payments
+    runtime: node
+    plan: free
+    branch: main
+    rootDir: payment-api
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_VERSION
+        value: "22.x"
       - key: RAZORPAY_KEY_ID
         sync: false
       - key: RAZORPAY_KEY_SECRET
+        sync: false
+      - key: PAYMENT_ALLOWED_ORIGINS
         sync: false

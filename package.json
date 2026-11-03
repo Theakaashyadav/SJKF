@@ -7,20 +7,20 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start --hostname 0.0.0.0",
-    "preview": "npm start",
+    "build": "next build --webpack && node scripts/verify-static-export.mjs",
+    "start": "node scripts/static-preview.mjs",
+    "preview": "node scripts/static-preview.mjs",
     "typecheck": "tsc --noEmit",
     "audit:visual": "node scripts/visual-audit.mjs",
     "audit:language": "node scripts/language-audit.mjs",
     "audit:payment": "node scripts/payment-audit.mjs",
-    "test:payments": "node --experimental-strip-types --experimental-test-isolation=none --test tests/payments.test.ts"
+    "test:payments": "node --experimental-strip-types --experimental-test-isolation=none --test tests/payment-api-url.test.ts && npm --prefix payment-api test"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",
     "@fontsource/dm-serif-display": "^5.3.0",
     "lucide-react": "latest",
-    "next": "latest",
+    "next": "16.4.4",
     "react": "latest",
     "react-dom": "latest"
   },

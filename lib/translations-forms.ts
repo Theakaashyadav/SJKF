@@ -1,4 +1,4 @@
-// Hindi copy for interactive forms, the document viewer and the photo gallery.
+﻿// Hindi copy for interactive forms, the document viewer and the photo gallery.
 // Account names, payment identifiers and document files retain their original values.
 export const formTranslations: Record<string, string> = {
   "Choose a cause": "दान का उद्देश्य चुनें",

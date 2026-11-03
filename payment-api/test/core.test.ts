@@ -1,10 +1,11 @@
-import assert from "node:assert/strict";
+﻿import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import test from "node:test";
-import { handleConfigRequest, handleOrderRequest, handleVerifyRequest } from "../lib/payments/razorpay.ts";
-import { createPaymentThrottle } from "../lib/payments/throttle.ts";
+import { handleConfigRequest, handleOrderRequest, handleVerifyRequest } from "../src/razorpay.ts";
+import { createPaymentThrottle } from "../src/throttle.ts";
+import { allowedOrigins } from "../src/origins.ts";
 
-const env = { RAZORPAY_KEY_ID: "rzp_test_localtest", RAZORPAY_KEY_SECRET: "local_mock_secret_not_a_real_key", NEXT_PUBLIC_SITE_URL: "https://foundation.example" };
+const env = { RAZORPAY_KEY_ID: "rzp_test_localtest", RAZORPAY_KEY_SECRET: "local_mock_secret_not_a_real_key", PAYMENT_ALLOWED_ORIGINS: "https://foundation.example" };
 const now = 1800000000000;
 const origin = "https://foundation.example";
 const order = { id: "order_localtest123", amount: 100000, currency: "INR", status: "created" };
@@ -95,40 +96,25 @@ test("order rejects wrong or missing origin, non-JSON content and oversized bodi
   assert.equal((await handleOrderRequest(request({ cause: "x".repeat(5000) }), { env, fetch: noNetwork })).status, 413);
 });
 
-test("origin validation uses validated browser Host instead of Next's internal bind address", async () => {
-  for (const browserHost of ["127.0.0.1:3000", "localhost:3000"]) {
-    const input = new Request("http://0.0.0.0:3000/api/payments/order/", {
-      method: "POST", headers: { Host: browserHost, Origin: `http://${browserHost}`, "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: 99, cause: "General Donation" }),
-    });
-    const response = await handleOrderRequest(input, { env, fetch: noNetwork });
-    assert.equal(response.status, 400, "Same-origin request reaches amount validation");
-    assert.equal((await response.json()).error, "INVALID_PAYMENT_REQUEST");
-  }
+test("approved static website origins may make cross-site API requests", async () => {
+  const response = await handleOrderRequest(request({ amount: 99, cause: "General Donation" }, { "sec-fetch-site": "cross-site", Host: "api.example" }), { env, fetch: noNetwork });
+  assert.equal(response.status, 400, "Approved origin reaches amount validation");
+  assert.equal((await response.json()).error, "INVALID_PAYMENT_REQUEST");
 });
 
-test("origin validation supports a proxy's HTTPS protocol without trusting forwarded-host", async () => {
-  const proxyRequest = (originHeader: string, extraHeaders: Record<string, string> = {}) => new Request("http://0.0.0.0:3000/api/payments/order/", {
-    method: "POST", headers: { Host: "custom.example", Origin: originHeader, "x-forwarded-proto": "https", "Content-Type": "application/json", ...extraHeaders },
-    body: JSON.stringify({ amount: 99, cause: "General Donation" }),
-  });
-  assert.equal((await handleOrderRequest(proxyRequest("https://custom.example"), { env, fetch: noNetwork })).status, 400);
-  assert.equal((await handleOrderRequest(proxyRequest("https://other.example"), { env, fetch: noNetwork })).status, 403);
-  assert.equal((await handleOrderRequest(proxyRequest("http://0.0.0.0:3000"), { env, fetch: noNetwork })).status, 403);
-  assert.equal((await handleOrderRequest(proxyRequest("https://other.example", { "x-forwarded-host": "other.example" }), { env, fetch: noNetwork })).status, 403);
-  assert.equal((await handleOrderRequest(proxyRequest("https://custom.example", { "sec-fetch-site": "cross-site" }), { env, fetch: noNetwork })).status, 403);
+test("API Host, request URL and former website settings cannot grant origin access", async () => {
+  const input = request({ amount: 99, cause: "General Donation" }, { Host: "foundation.example", "x-forwarded-host": "foundation.example" });
+  const response = await handleOrderRequest(input, { env: { ...env, PAYMENT_ALLOWED_ORIGINS: "", NEXT_PUBLIC_SITE_URL: origin }, fetch: noNetwork });
+  assert.equal(response.status, 403);
 });
 
-test("origin validation rejects malformed Host and protocol headers", async () => {
-  for (const host of ["user@custom.example", "custom.example/path", "custom.example,other.example", "custom .example", "custom.example?x=1", "custom.example#part", "custom.example:99999"]) {
-    const input = request({ amount: 99, cause: "General Donation" }, { Host: host });
-    assert.equal((await handleOrderRequest(input, { env, fetch: noNetwork })).status, 403, host);
-  }
-  assert.equal((await handleOrderRequest(request({ amount: 99, cause: "General Donation" }, { "x-forwarded-proto": "https,http" }), { env, fetch: noNetwork })).status, 403);
+test("origin allowlist accepts HTTPS or local development HTTP and rejects unsafe entries", () => {
+  const origins = allowedOrigins({ PAYMENT_ALLOWED_ORIGINS: "https://foundation.example,http://localhost:3000,http://127.0.0.1:3000,http://[::1]:3000,http://insecure.example,https://user@private.example,https://path.example/donate,https://query.example?x=1,*" });
+  assert.deepEqual([...origins], ["https://foundation.example", "http://localhost:3000", "http://127.0.0.1:3000", "http://[::1]:3000"]);
 });
 
 test("order reports missing credentials without an upstream request", async () => {
-  const response = await handleOrderRequest(request({ amount: 1000, cause: "General Donation" }), { env: {}, fetch: noNetwork });
+  const response = await handleOrderRequest(request({ amount: 1000, cause: "General Donation" }), { env: { PAYMENT_ALLOWED_ORIGINS: origin }, fetch: noNetwork });
   assert.equal(response.status, 503);
 });
 
