@@ -7,10 +7,14 @@
   },
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build --webpack && node scripts/verify-static-export.mjs",
-    "preview": "node scripts/static-preview.mjs",
+    "build": "next build --webpack",
+    "start": "next start --hostname 0.0.0.0",
+    "preview": "npm start",
     "typecheck": "tsc --noEmit",
-    "audit:visual": "node scripts/visual-audit.mjs"
+    "audit:visual": "node scripts/visual-audit.mjs",
+    "audit:language": "node scripts/language-audit.mjs",
+    "audit:payment": "node scripts/payment-audit.mjs",
+    "test:payments": "node --experimental-strip-types --experimental-test-isolation=none --test tests/payments.test.ts"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { LanguageProvider, T } from "@/components/LanguageProvider";
 import { organization, SITE_URL } from "@/lib/site";
 import "@fontsource-variable/manrope";
 import "@fontsource/dm-serif-display/400.css";
@@ -56,10 +57,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
-        <a className="skip-link" href="#main-content">Skip to main content</a>
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <a className="skip-link" href="#main-content"><T>Skip to main content</T></a>
+          <Header />
+          <main id="main-content">{children}</main>
+          <Footer />
+        </LanguageProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
       </body>
     </html>

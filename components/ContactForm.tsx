@@ -3,6 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, LoaderCircle, Send } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 function initialSubject(interest: string | null) {
   if (interest === "volunteer") return "Volunteer with us";
@@ -12,6 +13,7 @@ function initialSubject(interest: string | null) {
 }
 
 export function ContactForm() {
+  const { t } = useLanguage();
   const searchParams = useSearchParams();
   const defaultSubject = useMemo(() => initialSubject(searchParams.get("interest")), [searchParams]);
   const [subject, setSubject] = useState(defaultSubject);
@@ -56,16 +58,16 @@ export function ContactForm() {
     <>
       <form className="contact-form" onSubmit={submit} noValidate>
         <div className="form-grid">
-          <label className="field"><span>Name <b>*</b></span><input name="name" type="text" autoComplete="name" minLength={2} maxLength={100} required /></label>
-          <label className="field"><span>Email <b>*</b></span><input name="email" type="email" autoComplete="email" maxLength={254} required /></label>
-          <label className="field"><span>Phone <b>*</b></span><input name="phone" type="tel" autoComplete="tel" pattern="(?:\+?91[ -]?)?[6-9][0-9]{9}" title="Enter a valid 10-digit Indian mobile number" required /></label>
-          <label className="field"><span>Subject <b>*</b></span><select name="subject" value={subject} onChange={(event) => setSubject(event.target.value)} required><option>General enquiry</option><option>Volunteer with us</option><option>Partnership / CSR enquiry</option><option>Support a cause</option><option>Donation assistance</option><option>Media enquiry</option></select></label>
-          <label className="field field--wide"><span>Message <b>*</b></span><textarea name="message" rows={6} minLength={15} maxLength={2000} placeholder="Tell us how we can help or how you would like to get involved." required /></label>
-          <label className="honeypot" aria-hidden="true">Website<input name="_gotcha" type="text" tabIndex={-1} autoComplete="off" /></label>
+          <label className="field"><span>{t("Name")} <b>*</b></span><input name="name" type="text" autoComplete="name" minLength={2} maxLength={100} required /></label>
+          <label className="field"><span>{t("Email")} <b>*</b></span><input name="email" type="email" autoComplete="email" maxLength={254} required /></label>
+          <label className="field"><span>{t("Phone")} <b>*</b></span><input name="phone" type="tel" autoComplete="tel" pattern="(?:\+?91[ \-]?)?[6-9][0-9]{9}" title={t("Enter a valid 10-digit Indian mobile number")} required /></label>
+          <label className="field"><span>{t("Subject")} <b>*</b></span><select name="subject" value={subject} onChange={(event) => setSubject(event.target.value)} required>{["General enquiry", "Volunteer with us", "Partnership / CSR enquiry", "Support a cause", "Donation assistance", "Media enquiry"].map((option) => <option key={option} value={option}>{t(option)}</option>)}</select></label>
+          <label className="field field--wide"><span>{t("Message")} <b>*</b></span><textarea name="message" rows={6} minLength={15} maxLength={2000} placeholder={t("Tell us how we can help or how you would like to get involved.")} required /></label>
+          <label className="honeypot" aria-hidden="true">{t("Website")}<input name="_gotcha" type="text" tabIndex={-1} autoComplete="off" /></label>
         </div>
-        <p className="spam-note">Protected by required-field validation, a hidden bot-detection field and the configured form provider’s spam controls.</p>
-        {feedback ? <div className={`form-feedback form-feedback--${feedback.type}`} role="status">{feedback.type === "success" ? <CheckCircle2 /> : null}{feedback.message}</div> : null}
-        <button className="button button--green button--large" type="submit" disabled={sending}>{sending ? <><LoaderCircle className="spin" />Sending</> : <><Send />Send message</>}</button>
+        <p className="spam-note">{t("Protected by required-field validation, a hidden bot-detection field and the configured form provider’s spam controls.")}</p>
+        {feedback ? <div className={`form-feedback form-feedback--${feedback.type}`} role="status">{feedback.type === "success" ? <CheckCircle2 /> : null}{t(feedback.message)}</div> : null}
+        <button className="button button--green button--large" type="submit" disabled={sending}>{sending ? <><LoaderCircle className="spin" />{t("Sending")}</> : <><Send />{t("Send message")}</>}</button>
       </form>
     </>
   );

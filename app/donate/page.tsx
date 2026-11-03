@@ -1,3 +1,4 @@
+import { T } from "@/components/LanguageProvider";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { BadgeCheck, Check, HeartHandshake, LockKeyhole, ReceiptText, ShieldCheck } from "lucide-react";
@@ -17,24 +18,24 @@ export default function DonatePage() {
         <div className="container"><DirectDonation /></div>
         <div className="container donation-layout">
           <div className="donation-main">
-            <div className="donation-title"><p className="eyebrow">Razorpay checkout</p><h2>Another way to give.</h2><p>Choose an amount below to use Razorpay. Your cause, donor details and payment details are entered inside its secure hosted checkout when available.</p></div>
-            <Suspense fallback={<div className="form-loading">Preparing the secure donation form…</div>}><DonationForm /></Suspense>
+            <div className="donation-title"><p className="eyebrow"><T>{"Razorpay checkout"}</T></p><h2><T>{"Another way to give."}</T></h2><p><T>{"Choose an amount and cause below, then enter your donor and payment details in Razorpay Checkout."}</T></p></div>
+            <Suspense fallback={<div className="form-loading"><T>{"Preparing the secure donation form…"}</T></div>}><DonationForm /></Suspense>
           </div>
           <aside className="donation-sidebar" aria-label="Donation trust information">
             <div className="donation-summary-card">
               <HeartHandshake />
-              <h2>Your giving, directed with care.</h2>
-              <p>Select a specific cause or choose General Donation so the foundation can direct support to an appropriate priority.</p>
-              <ul><li><Check />Animal welfare and care</li><li><Check />Education and skills</li><li><Check />Health and environment</li><li><Check />Community support</li></ul>
+              <h2><T>{"Your giving, directed with care."}</T></h2>
+              <p><T>{"Select a specific cause or choose General Donation so the foundation can direct support to an appropriate priority."}</T></p>
+              <ul><li><Check /><T>{"Animal welfare and care"}</T></li><li><Check /><T>{"Education and skills"}</T></li><li><Check /><T>{"Health and environment"}</T></li><li><Check /><T>{"Community support"}</T></li></ul>
             </div>
             <div className="security-card">
-              <h3><LockKeyhole /> Payment security</h3>
-              <p>Complete UPI payments in your UPI app and bank transfers through your bank. Razorpay handles its own checkout and payment confirmation.</p>
-              <div><ShieldCheck /><span>Confirm the foundation&apos;s beneficiary name before completing your payment.</span></div>
-              <div><ReceiptText /><span>Keep your transaction reference when requesting an acknowledgement.</span></div>
+              <h3><LockKeyhole /><T>{" Payment security"}</T></h3>
+              <p><T>{"Razorpay donations are confirmed only after the payment is verified and captured. Direct UPI and bank transfers require reconciliation by the foundation."}</T></p>
+              <div><ShieldCheck /><span><T>{"Confirm the foundation's beneficiary name before completing your payment."}</T></span></div>
+              <div><ReceiptText /><span><T>{"Keep your transaction reference when requesting an acknowledgement."}</T></span></div>
             </div>
-            <div className="registration-mini"><BadgeCheck /><div><span>Registered Section 8 Company</span><strong>CIN: {organization.cin}</strong><strong>DARPAN: {organization.darpanId}</strong></div></div>
-            <p className="tax-note"><strong>Tax note:</strong> No 80G tax-exemption benefit is claimed on this website unless a valid applicable approval is separately published and verified.</p>
+            <div className="registration-mini"><BadgeCheck /><div><span><T>{"Registered Section 8 Company"}</T></span><strong><T>{"CIN: "}</T>{organization.cin}</strong><strong><T>{"DARPAN: "}</T>{organization.darpanId}</strong></div></div>
+            <p className="tax-note"><strong><T>{"Tax note:"}</T></strong><T>{" No 80G tax-exemption benefit is claimed on this website unless a valid applicable approval is separately published and verified."}</T></p>
           </aside>
         </div>
       </section>

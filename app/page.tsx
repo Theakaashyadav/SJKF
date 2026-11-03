@@ -1,3 +1,4 @@
+import { T } from "@/components/LanguageProvider";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -40,19 +41,19 @@ export default function HomePage() {
         <div className="home-hero__overlay" />
         <div className="home-hero__accent" aria-hidden="true" />
         <div className="container home-hero__content">
-          <div className="trust-pill"><BadgeCheck /> Registered Section 8 Non-Profit Organization</div>
-          <h1>Compassion in Action.<br /><span>Change That Reaches Every Life.</span></h1>
-          <p>Working for meaningful and sustainable change through animal welfare, education, healthcare, environmental protection and community development.</p>
+          <div className="trust-pill"><BadgeCheck /><T>{" Registered Section 8 Non-Profit Organization"}</T></div>
+          <h1><T>{"Compassion in Action."}</T><br /><span><T>{"Change That Reaches Every Life."}</T></span></h1>
+          <p><T>{"Working for meaningful and sustainable change through animal welfare, education, healthcare, environmental protection and community development."}</T></p>
           <div className="hero-actions">
-            <Link className="button button--gold button--large" href="/donate">Donate now</Link>
-            <Link className="button button--outline-light button--large" href="/our-work">Explore our work</Link>
+            <Link className="button button--gold button--large" href="/donate"><T>{"Donate now"}</T></Link>
+            <Link className="button button--outline-light button--large" href="/our-work"><T>{"Explore our work"}</T></Link>
           </div>
         </div>
         <div className="hero-proof">
           <div className="container hero-proof__inner">
-            <p><strong>Uttar Pradesh</strong><span>Registered state</span></p>
-            <p><strong>People & animals</strong><span>One compassionate mission</span></p>
-            <p><strong>Transparent by design</strong><span>Public registration details</span></p>
+            <p><strong><T>{"Uttar Pradesh"}</T></strong><span><T>{"Registered state"}</T></span></p>
+            <p><strong><T>{"People & animals"}</T></strong><span><T>{"One compassionate mission"}</T></span></p>
+            <p><strong><T>{"Transparent by design"}</T></strong><span><T>{"Public registration details"}</T></span></p>
           </div>
         </div>
       </section>
@@ -62,7 +63,7 @@ export default function HomePage() {
           <SectionHeading eyebrow="Our photo gallery" title="Moments of Care & Community" description="Explore photographs of animal care, community gatherings and learning. Select any photo for a closer look." centered />
           <GalleryGrid preview />
           <div className="home-gallery__actions">
-            <Link className="button button--green" href="/gallery">View full gallery <ArrowRight /></Link>
+            <Link className="button button--green" href="/gallery"><T>{"View full gallery "}</T><ArrowRight /></Link>
           </div>
         </div>
       </section>
@@ -71,14 +72,14 @@ export default function HomePage() {
         <div className="container intro-grid">
           <div>
             <SectionHeading eyebrow="Who we are" title="Working Together for a More Compassionate Society" />
-            <Link className="text-link" href="/about">Learn more about us <ArrowRight /></Link>
+            <Link className="text-link" href="/about"><T>{"Learn more about us "}</T><ArrowRight /></Link>
           </div>
           <div className="intro-copy">
-            <p className="lead">Swabhiman Foundation is founded on a simple belief: dignity and care should reach every life.</p>
-            <p>We bring people together around animal welfare, accessible education, healthcare awareness, environmental responsibility and the upliftment of vulnerable communities.</p>
-            <p>Our approach is grounded in service, transparency and responsible collaboration—building initiatives that communities can trust and sustain.</p>
+            <p className="lead"><T>{"Swabhiman Foundation is founded on a simple belief: dignity and care should reach every life."}</T></p>
+            <p><T>{"We bring people together around animal welfare, accessible education, healthcare awareness, environmental responsibility and the upliftment of vulnerable communities."}</T></p>
+            <p><T>{"Our approach is grounded in service, transparency and responsible collaboration—building initiatives that communities can trust and sustain."}</T></p>
             <div className="mini-values" aria-label="Our commitments">
-              <span><Check /> Compassion</span><span><Check /> Integrity</span><span><Check /> Service</span>
+              <span><Check /><T>{" Compassion"}</T></span><span><Check /><T>{" Integrity"}</T></span><span><Check /><T>{" Service"}</T></span>
             </div>
           </div>
         </div>
@@ -97,10 +98,9 @@ export default function HomePage() {
                   </div>
                   <div className="cause-card__body">
                     <span className="cause-card__icon"><Icon /></span>
-                    <h3>{area.title}</h3>
-                    <p>{area.description}</p>
-                    <Link href={`/our-work#${area.slug}`} aria-label={`Learn more about ${area.title}`}>
-                      Learn more <ArrowRight />
+                    <h3><T>{area.title}</T></h3>
+                    <p><T>{area.description}</T></p>
+                    <Link href={`/our-work#${area.slug}`} aria-label={`Learn more about ${area.title}`}><T>{"Learn more"}</T><ArrowRight />
                     </Link>
                   </div>
                 </article>
@@ -114,14 +114,14 @@ export default function HomePage() {
         <div className="container feature-split__grid">
           <div className="feature-split__media">
             <Image src="/images/stock/animal-care-feature.jpg" alt="A volunteer providing food to rescued dogs at an animal shelter" fill sizes="(max-width: 900px) 100vw, 50vw" />
-            <div className="feature-split__note"><HandHeart /><span>Care that protects dignity and wellbeing</span></div>
+            <div className="feature-split__note"><HandHeart /><span><T>{"Care that protects dignity and wellbeing"}</T></span></div>
           </div>
           <div className="feature-split__content">
-            <p className="eyebrow">Animal welfare</p>
-            <h2>Giving a Voice to Those Who Cannot Ask for Help</h2>
-            <p>Our animal welfare objectives include rescue support, treatment, feeding, vaccination, sterilization awareness, rehabilitation and shelter partnerships.</p>
-            <p>We aim to encourage humane communities where stray animals, cattle and other vulnerable animals receive responsible care and protection.</p>
-            <Link className="button button--green" href="/donate?cause=Animal%20Welfare">Support animal welfare</Link>
+            <p className="eyebrow"><T>{"Animal welfare"}</T></p>
+            <h2><T>{"Giving a Voice to Those Who Cannot Ask for Help"}</T></h2>
+            <p><T>{"Our animal welfare objectives include rescue support, treatment, feeding, vaccination, sterilization awareness, rehabilitation and shelter partnerships."}</T></p>
+            <p><T>{"We aim to encourage humane communities where stray animals, cattle and other vulnerable animals receive responsible care and protection."}</T></p>
+            <Link className="button button--green" href="/donate?cause=Animal%20Welfare"><T>{"Support animal welfare"}</T></Link>
           </div>
         </div>
       </section>
@@ -129,13 +129,13 @@ export default function HomePage() {
       <section className="section impact-section">
         <div className="container impact-grid">
           <div>
-            <p className="eyebrow eyebrow--light">Community impact</p>
-            <h2>Creating Change, One Community at a Time</h2>
-            <p>We measure meaningful progress through responsible action, community trust and the strength of the systems we help build—not through unverified claims.</p>
+            <p className="eyebrow eyebrow--light"><T>{"Community impact"}</T></p>
+            <h2><T>{"Creating Change, One Community at a Time"}</T></h2>
+            <p><T>{"We measure meaningful progress through responsible action, community trust and the strength of the systems we help build—not through unverified claims."}</T></p>
           </div>
           <div className="impact-list">
             {impactAreas.map((item, index) => (
-              <div key={item}><span>0{index + 1}</span><p>{item}</p><Check /></div>
+              <div key={item}><span>0{index + 1}</span><p><T>{item}</T></p><Check /></div>
             ))}
           </div>
         </div>
@@ -145,9 +145,9 @@ export default function HomePage() {
         <div className="container">
           <SectionHeading eyebrow="Take part" title="How You Can Help" description="Every person has something valuable to contribute—resources, time, expertise or a shared commitment to serve." centered />
           <div className="help-grid">
-            <article><span><HandHeart /></span><h3>Donate</h3><p>Your support helps strengthen carefully planned welfare initiatives.</p><Link href="/donate">Make a contribution <ArrowRight /></Link></article>
-            <article><span><Users /></span><h3>Volunteer</h3><p>Contribute your skills, time and energy to meaningful community action.</p><Link href="/contact?interest=volunteer">Volunteer with us <ArrowRight /></Link></article>
-            <article><span><HeartHandshake /></span><h3>Partner with us</h3><p>Collaborate through CSR, institutional expertise or responsible local partnerships.</p><Link href="/contact?interest=partnership">Start a conversation <ArrowRight /></Link></article>
+            <article><span><HandHeart /></span><h3><T>{"Donate"}</T></h3><p><T>{"Your support helps strengthen carefully planned welfare initiatives."}</T></p><Link href="/donate"><T>{"Make a contribution "}</T><ArrowRight /></Link></article>
+            <article><span><Users /></span><h3><T>{"Volunteer"}</T></h3><p><T>{"Contribute your skills, time and energy to meaningful community action."}</T></p><Link href="/contact?interest=volunteer"><T>{"Volunteer with us "}</T><ArrowRight /></Link></article>
+            <article><span><HeartHandshake /></span><h3><T>{"Partner with us"}</T></h3><p><T>{"Collaborate through CSR, institutional expertise or responsible local partnerships."}</T></p><Link href="/contact?interest=partnership"><T>{"Start a conversation "}</T><ArrowRight /></Link></article>
           </div>
         </div>
       </section>
@@ -156,13 +156,13 @@ export default function HomePage() {
         <div className="container trust-layout">
           <div>
             <SectionHeading eyebrow="Accountability" title="Committed to Transparency" description="Our legal identity is displayed clearly so supporters can make informed decisions with confidence." />
-            <p className="trust-note"><ShieldCheck /> No tax-exemption or certification claim is made without a verified, applicable approval.</p>
+            <p className="trust-note"><ShieldCheck /><T>{" No tax-exemption or certification claim is made without a verified, applicable approval."}</T></p>
           </div>
           <div className="trust-cards">
-            <article><Building2 /><span>Legal structure</span><strong>Section 8 Company</strong></article>
-            <article><BadgeCheck /><span>Corporate Identity Number</span><strong>{organization.cin}</strong></article>
-            <article><ShieldCheck /><span>NGO DARPAN Registration</span><strong>{organization.darpanId}</strong></article>
-            <article><BadgeCheck /><span>Incorporated</span><strong>{organization.incorporationDate}</strong></article>
+            <article><Building2 /><span><T>{"Legal structure"}</T></span><strong><T>{"Section 8 Company"}</T></strong></article>
+            <article><BadgeCheck /><span><T>{"Corporate Identity Number"}</T></span><strong>{organization.cin}</strong></article>
+            <article><ShieldCheck /><span><T>{"NGO DARPAN Registration"}</T></span><strong>{organization.darpanId}</strong></article>
+            <article><BadgeCheck /><span><T>{"Incorporated"}</T></span><strong><T>{organization.incorporationDate}</T></strong></article>
           </div>
         </div>
       </section>
@@ -172,9 +172,9 @@ export default function HomePage() {
         <div className="donation-cta__overlay" />
         <div className="container donation-cta__content">
           <span className="donation-cta__icon"><HandHeart /></span>
-          <h2>Your Contribution Can Create a Lasting Impact.</h2>
-          <p>Every contribution helps strengthen initiatives for people, animals and communities in need.</p>
-          <Link className="button button--gold button--large" href="/donate">Donate now</Link>
+          <h2><T>{"Your Contribution Can Create a Lasting Impact."}</T></h2>
+          <p><T>{"Every contribution helps strengthen initiatives for people, animals and communities in need."}</T></p>
+          <Link className="button button--gold button--large" href="/donate"><T>{"Donate now"}</T></Link>
         </div>
       </section>
     </>

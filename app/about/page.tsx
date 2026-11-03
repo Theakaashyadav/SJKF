@@ -1,3 +1,4 @@
+import { T } from "@/components/LanguageProvider";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,7 +20,7 @@ const members = [
   { name: "S k Bhardwaj", designation: "Executive Member", image: "s-k-bhardwaj.jpeg" },
   { name: "Santosh Yadav", designation: "Executive Member", image: "santosh-yadav.jpeg" },
   { name: "Neera Sharma", designation: "Joint Secretary", image: "neera-sharma.jpeg" },
-  { name: "Ramakant", designation: null, image: "ramakant.jpeg" },
+  { name: "Ramakant", designation: "Treasurer", image: "ramakant.jpeg" },
 ];
 
 export default function AboutPage() {
@@ -31,14 +32,14 @@ export default function AboutPage() {
         <div className="container story-grid">
           <div className="story-media">
             <Image src="/images/stock/about-rural-life.jpg" alt="An older woman sitting beside cattle outside a village home in Maharashtra" fill sizes="(max-width: 850px) 100vw, 45vw" />
-            <div className="stock-disclosure">Representative photography · Not an organizational project record</div>
+            <div className="stock-disclosure"><T>{"Representative photography · Not an organizational project record"}</T></div>
           </div>
           <div>
             <SectionHeading eyebrow="Our story" title="Purpose Built Around Dignity and Care" />
             <div className="prose-copy">
-              <p>Swabhiman Jan Evam Pashu Kalyan Foundation was incorporated on 20 June 2026 as a Section 8 non-profit organization in Uttar Pradesh.</p>
-              <p>Our purpose brings human welfare and animal welfare into one shared vision. We believe compassionate societies protect vulnerable people, care for animals and invest in the health of their communities and environment.</p>
-              <p>As a new organization, we are building responsibly: establishing strong partnerships, listening to local needs and creating a transparent foundation for long-term service.</p>
+              <p><T>{"Swabhiman Jan Evam Pashu Kalyan Foundation was incorporated on 20 June 2026 as a Section 8 non-profit organization in Uttar Pradesh."}</T></p>
+              <p><T>{"Our purpose brings human welfare and animal welfare into one shared vision. We believe compassionate societies protect vulnerable people, care for animals and invest in the health of their communities and environment."}</T></p>
+              <p><T>{"As a new organization, we are building responsibly: establishing strong partnerships, listening to local needs and creating a transparent foundation for long-term service."}</T></p>
             </div>
           </div>
         </div>
@@ -56,15 +57,15 @@ export default function AboutPage() {
                   ) : (
                     <div className="team-member__placeholder" role="img" aria-label={`Photo of ${member.name} coming soon`}>
                       <span aria-hidden="true">{member.name.split(" ").map((part) => part[0]).join("")}</span>
-                      <small>Photo coming soon</small>
+                      <small><T>{"Photo coming soon"}</T></small>
                     </div>
                   )}
                 </div>
                 <div className="team-member__details">
-                  <h3 id={`member-${index}`}>{member.name}</h3>
-                  {member.designation && <p className="team-member__designation">{member.designation}</p>}
+                  <h3 id={`member-${index}`}><T>{member.name}</T></h3>
+                  {member.designation && <p className="team-member__designation"><T>{member.designation}</T></p>}
                   <span className="team-member__rule" aria-hidden="true" />
-                  <p className="team-member__foundation">Swabhiman Jan Evam Pashu Kalyan Foundation</p>
+                  <p className="team-member__foundation"><T>{"Swabhiman Jan Evam Pashu Kalyan Foundation"}</T></p>
                 </div>
               </article>
             ))}
@@ -79,19 +80,19 @@ export default function AboutPage() {
             <ShieldCheck aria-hidden="true" />
           </div>
           <div className="registration-grid">
-            <article><Sparkles /><span>Organization type</span><strong>Section 8 Non-Profit Organization</strong></article>
-            <article><BadgeCheck /><span>Corporate Identity Number</span><strong>{organization.cin}</strong></article>
-            <article><ShieldCheck /><span>DARPAN ID</span><strong>{organization.darpanId}</strong></article>
-            <article><BadgeCheck /><span>Date of incorporation</span><strong>{organization.incorporationDate}</strong></article>
+            <article><Sparkles /><span><T>{"Organization type"}</T></span><strong><T>{"Section 8 Non-Profit Organization"}</T></strong></article>
+            <article><BadgeCheck /><span><T>{"Corporate Identity Number"}</T></span><strong>{organization.cin}</strong></article>
+            <article><ShieldCheck /><span><T>{"DARPAN ID"}</T></span><strong>{organization.darpanId}</strong></article>
+            <article><BadgeCheck /><span><T>{"Date of incorporation"}</T></span><strong><T>{organization.incorporationDate}</T></strong></article>
           </div>
-          <div className="verification-note">View our registration records, governance documents and ISO 9001 document in the <Link href="/documents">document library</Link>.</div>
+          <div className="verification-note"><T>{"View our registration records, governance documents and ISO 9001 document in the "}</T><Link href="/documents"><T>{"document library"}</T></Link>.</div>
         </div>
       </section>
 
       <section className="compact-cta">
         <div className="container compact-cta__inner">
-          <div><p className="eyebrow eyebrow--light">Be part of the mission</p><h2>Compassion becomes change when people act together.</h2></div>
-          <div><Link className="button button--gold button--large" href="/donate">Support our mission</Link><Link className="button button--outline-light button--large" href="/contact">Talk to us</Link></div>
+          <div><p className="eyebrow eyebrow--light"><T>{"Be part of the mission"}</T></p><h2><T>{"Compassion becomes change when people act together."}</T></h2></div>
+          <div><Link className="button button--gold button--large" href="/donate"><T>{"Support our mission"}</T></Link><Link className="button button--outline-light button--large" href="/contact"><T>{"Talk to us"}</T></Link></div>
         </div>
       </section>
     </>

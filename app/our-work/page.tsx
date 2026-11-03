@@ -1,3 +1,4 @@
+import { T } from "@/components/LanguageProvider";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,7 +17,7 @@ export default function OurWorkPage() {
       <section className="section work-intro">
         <div className="container work-intro__inner">
           <SectionHeading eyebrow="Connected priorities" title="One Mission, Many Paths to Change" description="Each focus area is part of a wider commitment to resilient communities. As a growing organization, we describe what we aim to do—not achievements that have not yet been evidenced." />
-          <div className="principle-card"><HeartHandshake /><p><strong>Our working principle</strong><span>Listen carefully. Plan responsibly. Partner transparently. Act with compassion.</span></p></div>
+          <div className="principle-card"><HeartHandshake /><p><strong><T>{"Our working principle"}</T></strong><span><T>{"Listen carefully. Plan responsibly. Partner transparently. Act with compassion."}</T></span></p></div>
         </div>
       </section>
 
@@ -28,19 +29,19 @@ export default function OurWorkPage() {
               <div className="container work-section__grid">
                 <div className="work-section__media">
                   <Image src={area.image} alt={area.alt} style={{ objectPosition: "imagePosition" in area ? area.imagePosition : undefined }} fill sizes="(max-width: 900px) 100vw, 50vw" />
-                  <span>Representative photography · Project media to be added after verification</span>
+                  <span><T>{"Representative photography · Project media to be added after verification"}</T></span>
                 </div>
                 <div className="work-section__content">
                   <div className="work-section__number">{area.number}</div>
                   <span className="work-section__icon"><Icon /></span>
-                  <h2>{area.title}</h2>
-                  <p className="work-section__summary">{area.summary}</p>
-                  <h3>What we aim to do</h3>
-                  <p>{area.aim}</p>
+                  <h2><T>{area.title}</T></h2>
+                  <p className="work-section__summary"><T>{area.summary}</T></p>
+                  <h3><T>{"What we aim to do"}</T></h3>
+                  <p><T>{area.aim}</T></p>
                   <ul>
-                    {area.activities.map((activity) => <li key={activity}><Check />{activity}</li>)}
+                    {area.activities.map((activity) => <li key={activity}><Check /><T>{activity}</T></li>)}
                   </ul>
-                  <Link className="button button--green" href={`/donate?cause=${encodeURIComponent(area.title)}`}>Support this cause</Link>
+                  <Link className="button button--green" href={`/donate?cause=${encodeURIComponent(area.title)}`}><T>{"Support this cause"}</T></Link>
                 </div>
               </div>
             </section>
@@ -50,8 +51,8 @@ export default function OurWorkPage() {
 
       <section className="compact-cta">
         <div className="container compact-cta__inner">
-          <div><p className="eyebrow eyebrow--light">Create change together</p><h2>Choose the cause closest to your heart.</h2></div>
-          <div><Link className="button button--gold button--large" href="/donate">Donate now</Link><Link className="button button--outline-light button--large" href="/contact">Partner with us</Link></div>
+          <div><p className="eyebrow eyebrow--light"><T>{"Create change together"}</T></p><h2><T>{"Choose the cause closest to your heart."}</T></h2></div>
+          <div><Link className="button button--gold button--large" href="/donate"><T>{"Donate now"}</T></Link><Link className="button button--outline-light button--large" href="/contact"><T>{"Partner with us"}</T></Link></div>
         </div>
       </section>
     </>

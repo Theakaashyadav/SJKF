@@ -1,3 +1,5 @@
+import { T } from "@/components/LanguageProvider";
+
 export function SectionHeading({
   eyebrow,
   title,
@@ -11,9 +13,9 @@ export function SectionHeading({
 }) {
   return (
     <div className={`section-heading ${centered ? "section-heading--center" : ""}`}>
-      <p className="eyebrow">{eyebrow}</p>
-      <h2>{title}</h2>
-      {description ? <p>{description}</p> : null}
+      <p className="eyebrow"><T>{eyebrow}</T></p>
+      <h2><T>{title}</T></h2>
+      {description ? <p><T>{description}</T></p> : null}
     </div>
   );
 }

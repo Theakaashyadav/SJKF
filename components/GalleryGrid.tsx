@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Expand, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const filters = ["All", "Animal Welfare", "Education", "Community"] as const;
 
@@ -14,6 +15,7 @@ const items = [
 ] as const;
 
 export function GalleryGrid({ preview = false }: { preview?: boolean }) {
+  const { language, t } = useLanguage();
   const [filter, setFilter] = useState<(typeof filters)[number]>("All");
   const [selected, setSelected] = useState<(typeof items)[number] | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -37,16 +39,16 @@ export function GalleryGrid({ preview = false }: { preview?: boolean }) {
   return (
     <>
       {!preview && (
-        <div className="gallery-filters" role="group" aria-label="Filter gallery">
-          {filters.map((item) => <button type="button" key={item} onClick={() => setFilter(item)} className={filter === item ? "is-active" : ""} aria-pressed={filter === item}>{item}</button>)}
+        <div className="gallery-filters" role="group" aria-label={t("Filter gallery")}>
+          {filters.map((item) => <button type="button" key={item} onClick={() => setFilter(item)} className={filter === item ? "is-active" : ""} aria-pressed={filter === item}>{t(item)}</button>)}
         </div>
       )}
       <div className={`gallery-grid${preview ? " gallery-grid--preview" : ""}`} aria-live="polite">
         {filtered.map((item, index) => (
-          <button type="button" className={`gallery-card gallery-card--${(index % 3) + 1}`} key={item.id} onClick={() => setSelected(item)} aria-label={`Open ${item.title}`}>
-            <Image src={item.image} alt={item.alt} fill sizes={preview ? "(max-width: 560px) 100vw, (max-width: 820px) 50vw, 25vw" : "(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw"} />
-            <span className="gallery-card__tag">{item.category}</span>
-            <span className="gallery-card__content"><strong>{item.title}</strong><span>View details <Expand /></span></span>
+          <button type="button" className={`gallery-card gallery-card--${(index % 3) + 1}`} key={item.id} onClick={() => setSelected(item)} aria-label={language === "hi" ? `${t(item.title)} खोलें` : `Open ${item.title}`}>
+            <Image src={item.image} alt={t(item.alt)} fill sizes={preview ? "(max-width: 560px) 100vw, (max-width: 820px) 50vw, 25vw" : "(max-width: 700px) 100vw, (max-width: 1000px) 50vw, 33vw"} />
+            <span className="gallery-card__tag">{t(item.category)}</span>
+            <span className="gallery-card__content"><strong>{t(item.title)}</strong><span>{t("View details")} <Expand /></span></span>
           </button>
         ))}
       </div>
@@ -54,12 +56,12 @@ export function GalleryGrid({ preview = false }: { preview?: boolean }) {
       {selected ? (
         <div className="lightbox" role="dialog" aria-modal="true" aria-labelledby="lightbox-title" onMouseDown={(event) => event.currentTarget === event.target && setSelected(null)} onKeyDown={(event) => { if (event.key === "Tab") { event.preventDefault(); closeButtonRef.current?.focus(); } }}>
           <div className="lightbox__panel">
-            <button ref={closeButtonRef} className="lightbox__close" type="button" onClick={() => setSelected(null)} aria-label="Close gallery item"><X /></button>
-            <div className="lightbox__image"><Image src={selected.image} alt={selected.alt} fill sizes="90vw" /></div>
+            <button ref={closeButtonRef} className="lightbox__close" type="button" onClick={() => setSelected(null)} aria-label={t("Close gallery item")}><X /></button>
+            <div className="lightbox__image"><Image src={selected.image} alt={t(selected.alt)} fill sizes="90vw" /></div>
             <div className="lightbox__body">
-              <span className="gallery-card__tag">{selected.category}</span>
-              <h2 id="lightbox-title">{selected.title}</h2>
-              <p>{selected.description}</p>
+              <span className="gallery-card__tag">{t(selected.category)}</span>
+              <h2 id="lightbox-title">{t(selected.title)}</h2>
+              <p>{t(selected.description)}</p>
             </div>
           </div>
         </div>
