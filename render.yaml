@@ -9,11 +9,8 @@ services:
     envVars:
       - key: NODE_VERSION
         value: "22.x"
-      - key: NEXT_PUBLIC_RAZORPAY_API_URL
-        fromService:
-          type: web
-          name: sjkf-payments
-          envVarKey: PAYMENT_PUBLIC_URL
+      - key: NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL
+        value: https://script.google.com/macros/s/AKfycbyMpvILMYxYnw1dz0UxqBg4Jb9TTO6X85a4JghIkwfNdvrWXkl60Upuv0k4oaslW16o/exec
     headers:
       - path: /*
         name: X-Content-Type-Options
@@ -33,28 +30,3 @@ services:
       - path: /*
         name: Cross-Origin-Opener-Policy
         value: same-origin-allow-popups
-
-  - type: web
-    name: sjkf-payments
-    runtime: node
-    plan: free
-    branch: main
-    rootDir: payment-api
-    buildCommand: npm ci
-    startCommand: npm start
-    healthCheckPath: /health
-    autoDeployTrigger: commit
-    envVars:
-      - key: NODE_VERSION
-        value: "22.x"
-      - key: RAZORPAY_KEY_ID
-        sync: false
-      - key: RAZORPAY_KEY_SECRET
-        sync: false
-      - key: PAYMENT_ALLOWED_ORIGINS
-        value: https://www.swabhimankalyanfoundation.org,https://swabhimankalyanfoundation.org,https://sjkf.onrender.com
-      - key: PAYMENT_PUBLIC_URL
-        fromService:
-          type: web
-          name: sjkf-payments
-          envVarKey: RENDER_EXTERNAL_URL

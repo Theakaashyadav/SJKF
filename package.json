@@ -14,7 +14,7 @@
     "audit:visual": "node scripts/visual-audit.mjs",
     "audit:language": "node scripts/language-audit.mjs",
     "audit:payment": "node scripts/payment-audit.mjs",
-    "test:payments": "node --experimental-strip-types --experimental-test-isolation=none --test tests/payment-api-url.test.ts && npm --prefix payment-api test"
+    "test:payments": "node --experimental-strip-types --experimental-test-isolation=none --test tests/payment-api-url.test.ts tests/payment-client.test.ts tests/payment-pending.test.ts && node --experimental-test-isolation=none --test google-apps-script/tests/payment.test.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",

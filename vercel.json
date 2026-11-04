@@ -1,7 +1,9 @@
 {
-  "framework": "nextjs",
+  "framework": null,
+  "buildCommand": "npm run build",
+  "outputDirectory": "out",
   "cleanUrls": true,
-  "trailingSlash": false,
+  "trailingSlash": true,
   "headers": [
     {
       "source": "/(.*)",

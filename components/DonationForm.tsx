@@ -6,7 +6,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { CheckCircle2, CreditCard, LoaderCircle, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useLanguage } from "@/components/LanguageProvider";
 import { causeOptions, organization } from "@/lib/site";
-import { paymentApiEndpoint, type PaymentApiAction } from "@/lib/payments/api-url";
+import { paymentApiBase, paymentApiEndpoint } from "@/lib/payments/api-url";
+import { requestPayment } from "@/lib/payments/client";
+import { googleAppsScriptUrl } from "@/lib/payments/config";
+import { parsePendingPayment, pendingPaymentKey, type PendingPayment, type Verification } from "@/lib/payments/pending";
 
 const amounts = [500, 1000, 2500, 5000, 10000];
 type CheckoutResponse = { razorpay_order_id: string; razorpay_payment_id: string; razorpay_signature: string };
@@ -20,7 +23,7 @@ type CheckoutOptions = {
 type Checkout = { open: () => void; close: () => void; on: (event: "payment.failed", callback: (response: { error?: { metadata?: { payment_id?: string } } }) => void) => void };
 type RazorpayConstructor = new (options: CheckoutOptions) => Checkout;
 type Order = { keyId: string; orderId: string; amount: number; currency: "INR"; orderToken: string };
-type Verification = { orderId: string; paymentId: string; signature: string; orderToken: string };
+type PaymentResult = { verified: boolean; status: string; orderId: string; paymentId: string; currency: string; amount: number };
 type Flow = "idle" | "preparing" | "checkout" | "verifying" | "cancelled" | "failed" | "pending" | "unconfirmed" | "success";
 type Availability = "checking" | "missing" | "unconfigured" | "unavailable" | "ready";
 
@@ -52,18 +55,6 @@ function loadCheckout() {
   return checkoutLoader;
 }
 
-async function postPayment(base: string, action: PaymentApiAction, body: object) {
-  const endpoint = paymentApiEndpoint(base, action);
-  if (!endpoint) throw new Error("Payment service is not configured");
-  const response = await fetch(endpoint, {
-    method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body),
-    cache: "no-store", signal: AbortSignal.timeout(60000),
-  });
-  const data = await response.json();
-  if (!response.ok || !data || typeof data !== "object") throw new Error("Payment request unavailable");
-  return data;
-}
-
 export function DonationForm() {
   const { language, t } = useLanguage();
   const searchParams = useSearchParams();
@@ -71,7 +62,7 @@ export function DonationForm() {
   const [cause, setCause] = useState<string>(() => causeOptions.find((option) => option === requestedCause) || "General Donation");
   const [selectedAmount, setSelectedAmount] = useState<number | "custom">(1000);
   const [customAmount, setCustomAmount] = useState("");
-  const paymentApi = process.env.NEXT_PUBLIC_RAZORPAY_API_URL?.trim() || "";
+  const paymentApi = paymentApiBase(process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL?.trim() || googleAppsScriptUrl) || "";
   const configEndpoint = paymentApiEndpoint(paymentApi, "config");
   const [availability, setAvailability] = useState<Availability>("checking");
   const [availabilityAttempt, setAvailabilityAttempt] = useState(0);
@@ -79,6 +70,8 @@ export function DonationForm() {
   const [paymentReference, setPaymentReference] = useState("");
   const [verifiedAmount, setVerifiedAmount] = useState(0);
   const verification = useRef<Verification | null>(null);
+  const verificationAmount = useRef(0);
+  const recoveryStarted = useRef(false);
   const busyRef = useRef(false);
   const mounted = useRef(true);
   const amount = useMemo(() => selectedAmount === "custom" ? Number(customAmount) : selectedAmount, [customAmount, selectedAmount]);
@@ -94,19 +87,32 @@ export function DonationForm() {
   }, []);
 
   useEffect(() => {
+    if (recoveryStarted.current || !paymentApi) return;
+    recoveryStarted.current = true;
+    try {
+      const saved = parsePendingPayment(window.sessionStorage.getItem(pendingPaymentKey), paymentApi);
+      if (!saved) return;
+      verification.current = saved.details;
+      verificationAmount.current = saved.amount;
+      setSelectedAmount("custom");
+      setCustomAmount(String(saved.amount));
+      setCause(causeOptions.find((option) => option === saved.cause) || "General Donation");
+      setPaymentReference(saved.details.paymentId);
+      void verifyPayment(saved.details, saved.amount);
+    } catch { /* Checkout still works when browser storage is unavailable. */ }
+  }, [paymentApi]);
+
+  useEffect(() => {
     if (!configEndpoint) {
       setAvailability("missing");
       return;
     }
-    const endpoint = configEndpoint;
     const controller = new AbortController();
     setAvailability("checking");
     async function checkAvailability() {
       try {
-        const response = await fetch(endpoint, { cache: "no-store", signal: AbortSignal.any([controller.signal, AbortSignal.timeout(60000)]) });
-        if (!response.ok) throw new Error("Payment availability check failed");
-        const data = await response.json();
-        if (!data || typeof data !== "object" || typeof data.configured !== "boolean") throw new Error("Invalid payment availability response");
+        const data = await requestPayment<{ configured: boolean }>(paymentApi, "config", undefined, controller.signal);
+        if (typeof data.configured !== "boolean") throw new Error("Invalid payment availability response");
         if (!controller.signal.aborted) setAvailability(data.configured ? "ready" : "unconfigured");
       } catch {
         if (!controller.signal.aborted) setAvailability("unavailable");
@@ -114,18 +120,19 @@ export function DonationForm() {
     }
     void checkAvailability();
     return () => { controller.abort(); };
-  }, [configEndpoint, availabilityAttempt]);
+  }, [configEndpoint, paymentApi, availabilityAttempt]);
 
-  async function verifyPayment(details: Verification) {
+  async function verifyPayment(details: Verification, expectedAmount: number) {
     if (!mounted.current) return;
     setFlow("verifying");
     busyRef.current = true;
     try {
-      const result = await postPayment(paymentApi, "verify", details);
+      const result = await requestPayment<PaymentResult>(paymentApi, "verify", details);
       if (!mounted.current) return;
-      if (result.verified === true && result.status === "captured" && result.orderId === details.orderId && result.paymentId === details.paymentId && result.currency === "INR" && result.amount === amount * 100) {
+      if (result.verified === true && result.status === "captured" && result.orderId === details.orderId && result.paymentId === details.paymentId && result.currency === "INR" && result.amount === expectedAmount * 100) {
         setVerifiedAmount(result.amount);
         setFlow("success");
+        try { window.sessionStorage.removeItem(pendingPaymentKey); } catch { /* Storage is optional. */ }
       } else if (result.verified === false && result.status === "pending") {
         setFlow("pending");
       } else {
@@ -146,7 +153,7 @@ export function DonationForm() {
     verification.current = null;
     try {
       const Razorpay = await loadCheckout();
-      const order: Order = await postPayment(paymentApi, "order", { amount, cause });
+      const order = await requestPayment<Order>(paymentApi, "order", { amount, cause });
       if (!mounted.current) { busyRef.current = false; return; }
       if (!/^rzp_(?:test|live)_[A-Za-z0-9]+$/.test(order.keyId) || !/^order_[A-Za-z0-9]+$/.test(order.orderId) || order.amount !== amount * 100 || order.currency !== "INR" || typeof order.orderToken !== "string" || !order.orderToken) throw new Error("Invalid checkout order");
       let callbackReceived = false;
@@ -158,10 +165,14 @@ export function DonationForm() {
         handler: (response) => {
           if (callbackReceived) return;
           callbackReceived = true;
+          if (!mounted.current) return;
           const details = { orderId: order.orderId, paymentId: response.razorpay_payment_id, signature: response.razorpay_signature, orderToken: order.orderToken };
           verification.current = details;
+          verificationAmount.current = amount;
+          const pending: PendingPayment = { backend: paymentApi, amount, cause, createdAt: Date.now(), details };
+          try { window.sessionStorage.setItem(pendingPaymentKey, JSON.stringify(pending)); } catch { /* Storage is optional. */ }
           setPaymentReference(response.razorpay_payment_id || "");
-          void verifyPayment(details);
+          void verifyPayment(details, amount);
         },
         modal: { confirm_close: true, ondismiss: () => {
           if (!mounted.current || callbackReceived) return;
@@ -208,7 +219,7 @@ export function DonationForm() {
         {flow === "success" ? <div className="form-feedback form-feedback--success payment-confirmation" role="status"><CheckCircle2 aria-hidden="true" /><div><strong>{t("Payment confirmed. Thank you for your support.")}</strong><p>₹{(verifiedAmount / 100).toLocaleString("en-IN")}</p></div></div> : null}
         {paymentReference ? <p className="payment-reference">{t("Payment reference:")} <strong>{paymentReference}</strong></p> : null}
         {configured && !awaitingConfirmation && flow !== "success" ? <button className="button button--gold button--large donation-checkout" type="button" disabled={busy || !amountIsValid} onClick={() => void startCheckout()}>{busy ? <LoaderCircle className="spin" aria-hidden="true" /> : <LockKeyhole aria-hidden="true" />}{t(busy ? "Please wait…" : "Donate securely")}</button> : null}
-        {awaitingConfirmation ? <button className="button button--green" type="button" onClick={() => { if (!busyRef.current && verification.current) void verifyPayment(verification.current); }}>{t("Check payment status")}</button> : null}
+        {awaitingConfirmation ? <button className="button button--green" type="button" onClick={() => { if (!busyRef.current && verification.current) void verifyPayment(verification.current, verificationAmount.current); }}>{t("Check payment status")}</button> : null}
         {awaitingConfirmation || flow === "success" ? <p><Link className="text-link" href="/contact?interest=donation">{t("Contact the foundation for an acknowledgement")}</Link></p> : null}
       </div>
 
